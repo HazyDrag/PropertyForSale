@@ -7,8 +7,7 @@ namespace PropertyForSaleDomainModel
         public PhotoMap()
         {
             HasKey(p => p.ID);
-
-            //Property(p => p.Advert).IsRequired();
+            HasRequired(p => p.Advert);
             Property(p => p.Path).HasMaxLength(255).IsRequired();
         }
     }

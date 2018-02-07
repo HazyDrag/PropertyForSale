@@ -14,7 +14,6 @@ namespace PropertyForSaleDomainModel
         public String Description { get; set; }
         public String Type { get; set; }
         
-        [Required]
         public ApplicationUser User { get; set; }
         public AdStatus Status { get; set; }
 
