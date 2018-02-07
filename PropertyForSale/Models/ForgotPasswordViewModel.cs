@@ -3,9 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PropertyForSale.Models
 {
-    public class ForgotViewModel
+    public class ForgotPasswordViewModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public String Email { get; set; }
     }

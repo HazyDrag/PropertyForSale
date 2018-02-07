@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace PropertyForSaleDomainModel
+namespace PropertyForSale.Models
 {
     public class LoginViewModel
     {
