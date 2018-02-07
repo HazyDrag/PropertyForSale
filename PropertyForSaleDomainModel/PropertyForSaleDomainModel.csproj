@@ -98,7 +98,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountViewModels.cs" />
     <Compile Include="AdStatus.cs" />
     <Compile Include="AdType.cs" />
     <Compile Include="AdTypeMap.cs" />
@@ -107,7 +106,6 @@
     <Compile Include="ApplicationDbContext.cs" />
     <Compile Include="ApplicationUser.cs" />
     <Compile Include="ApplicationUserMap.cs" />
-    <Compile Include="ManageViewModels.cs" />
     <Compile Include="Migrations\201802070938058_user1.cs" />
     <Compile Include="Migrations\201802070938058_user1.Designer.cs">
       <DependentUpon>201802070938058_user1.cs</DependentUpon>
