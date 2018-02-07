@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity.ModelConfiguration;
 
 namespace PropertyForSaleDomainModel
 {
@@ -11,12 +6,13 @@ namespace PropertyForSaleDomainModel
     {
         public AdvertMap()
         {
-            //ToTable("Adverts");
             HasKey(a => a.ID);
-
-            //Property(a => a.Username).HasMaxLength(50);
-            Property(a => a.Name).HasMaxLength(255);
-            //Property(a => a.Name).HasMaxLength(255);
+            
+            Property(a => a.Name).HasMaxLength(100).IsRequired();
+            Property(a => a.Town).HasMaxLength(50);
+            Property(a => a.Description).HasMaxLength(400);
+            Property(a => a.Type).HasMaxLength(40).IsRequired();
+            //Property(a => a.User).IsRequired();
         }
     }
 }

@@ -11,10 +11,10 @@ namespace PropertyForSaleDomainModel
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public String Login { get; set; }
+        public String Name { get; set; }
         public String Town { get; set; }
         public DateTime RegistrationDate { get; set; }
-        
+
         public virtual List<Advert> Adverts { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -23,8 +23,9 @@ namespace PropertyForSaleDomainModel
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
-       }
+       }        
     }
 
-    
+
 }
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PropertyForSaleDomainModel
 {
@@ -12,9 +13,8 @@ namespace PropertyForSaleDomainModel
         public String Town { get; set; }
         public String Description { get; set; }
         public String Type { get; set; }
-        public String Photo { get; set; }
-
         
+        [Required]
         public ApplicationUser User { get; set; }
         public AdStatus Status { get; set; }
 

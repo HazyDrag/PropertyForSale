@@ -15,8 +15,7 @@ namespace PropertyForSaleDomainModel
         public DbSet<Photo> Photos { get; set; }
 
         public ApplicationDbContext()
-            : base(@"Data Source=DESKTOP-9MMJ8SC\SQLEXPRESS;Initial Catalog=PropertyForSale;" +
-          "Integrated Security=SSPI", throwIfV1Schema: false)
+            : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 
@@ -27,8 +26,11 @@ namespace PropertyForSaleDomainModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.Add(new AdvertMap());
+            modelBuilder.Configurations.Add(new PhotoMap());
+            modelBuilder.Configurations.Add(new AdTypeMap());
+            modelBuilder.Configurations.Add(new ApplicationUserMap());
         }
-    }
+    }    
 }
