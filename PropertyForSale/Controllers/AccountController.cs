@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
 using PropertyForSale.Models;
-using PropertyForSaleDomainModel;
+using PropertyForSaleDomainModel.Entities;
 
 namespace PropertyForSale.Controllers
 {

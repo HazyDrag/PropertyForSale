@@ -1,0 +1,22 @@
+﻿@using PropertyForSaleDomainModel.Entities
+@model IEnumerable<Advert>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var a in @Model)
+{
+<div>
+    <h3>Name: @a.Name</h3>
+    <p>Town: @a.Town</p>
+    <p>Type: @a.Type.ToString()</p>
+    <p>Description: @a.Description</p>
+    <p>Status: @a.Status.ToString()</p>
+    <h4>@a.Price.ToString("# $")</h4>
+    <p> </p>
+</div>
+}
+
