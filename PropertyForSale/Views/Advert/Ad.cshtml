@@ -1,4 +1,5 @@
-﻿@model PropertyForSale.Models.AdViewModel
+﻿@using PropertyForSale.Models
+@model AdViewModel
 
 @{
     ViewBag.Title = "Ad";
@@ -8,10 +9,25 @@
         <tr>
             <td>
                 <h1>@Model.Name</h1>
+                @switch (Model.Status)
+                {
+                    case AdStatusModel.Active:
+                        <h4>Status: <span class="label label-success">@Model.Status.ToString()</span></h4>
+                        break;
+                    case AdStatusModel.Pause:
+                        <h4>Status: <span class="label label-warning">@Model.Status.ToString()</span></h4>
+                        break;
+                    case AdStatusModel.Stop:
+                        <h4>Status: <span class="label label-danger">@Model.Status.ToString()</span></h4>
+                        break;
+                }
                 <p>Type: @Model.Type</p>
                 @if (Model.Photos.Count > 0)
                 {
-                    <img src="~/Images/Ad/@Model.Photos[0].Path" width="500" alt="advert image">
+                    foreach (PhotoModel p in Model.Photos)
+                    {
+                        <img src="~/Images/Ad/@p.Path" width="500" alt="advert image">
+                    }
                 }
                 else
                 {

@@ -19,6 +19,22 @@ namespace PropertyForSale.Controllers
             repository = repo;
         }
 
+        //
+        // GET: /Advert/AddAd
+        public ViewResult AddAd()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Advert/AddAd
+        [HttpPost]
+        public ActionResult AddAd(AddAdViewModel model)
+        {
+
+            return View();
+        }
+
         public ViewResult Ad(Int32? AdId)
         {
             try
@@ -34,10 +50,24 @@ namespace PropertyForSale.Controllers
                     Price = data.Price,
                     PhoneNumber = data.User.PhoneNumber,
                     UserName = data.User.Name,
-                    Status = data.Status.ToString(),
                     Photos = data.Photos.Select(p => new PhotoModel() { ID = p.ID, Path = p.Path }).ToList(),
                     Type = data.Type.Name
                 };
+                
+                switch (data.Status.ToString())
+                {
+                    case "Active":
+                        model.Status = AdStatusModel.Active;
+                        break;
+                    case "Pause":
+                        model.Status = AdStatusModel.Pause;
+                        break;
+                    case "Stop":
+                        model.Status = AdStatusModel.Stop;
+                        break;
+                    default:
+                        return View("Error");
+                }
 
                 return View(model);
             }

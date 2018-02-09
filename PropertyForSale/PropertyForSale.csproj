@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\AddAdViewModel.cs" />
     <Compile Include="Models\AdStatusModel.cs" />
     <Compile Include="Models\AdTypeModel.cs" />
     <Compile Include="Models\AdvertModel.cs" />
@@ -339,6 +340,7 @@
     <Content Include="Views\Advert\List.cshtml" />
     <Content Include="Views\Shared\_AdvertListPartial.cshtml" />
     <Content Include="Views\Advert\Ad.cshtml" />
+    <Content Include="Views\Advert\AddAd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

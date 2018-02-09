@@ -19,7 +19,7 @@ namespace PropertyForSale.Models
 
         public String Type { get; set; }
 
-        public String Status { get; set; }
+        public AdStatusModel Status { get; set; }
 
         public List<PhotoModel> Photos { get; set; }
     }
