@@ -1,0 +1,35 @@
+﻿@model PropertyForSale.Models.AdViewModel
+
+@{
+    ViewBag.Title = "Ad";
+}
+<div class="well" >
+    <table>
+        <tr>
+            <td>
+                <h1>@Model.Name</h1>
+                <p>Type: @Model.Type</p>
+                @if (Model.Photos.Count > 0)
+                {
+                    <img src="~/Images/Ad/@Model.Photos[0].Path" width="500" alt="advert image">
+                }
+                else
+                {
+                <img src="~/Images/Ad/defaultAdImage.jpg" width="500" alt="advert image">
+                }
+                <p>@Model.Description</p>
+                <h1>
+                    <span class="label label-primary">@Model.Price.ToString("# $")</span>
+                </h1>
+            </td>
+            <td>
+                <blockquote>
+                    <h3>Contacts:</h3>
+                    <p>Name: @Model.UserName</p>
+                    <p>Phone number: @Model.PhoneNumber</p>
+                </blockquote>
+            </td>
+        </tr>
+    </table>
+</div>
+

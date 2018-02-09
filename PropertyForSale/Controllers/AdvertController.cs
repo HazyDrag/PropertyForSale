@@ -19,11 +19,38 @@ namespace PropertyForSale.Controllers
             repository = repo;
         }
 
+        public ViewResult Ad(Int32? AdId)
+        {
+            try
+            {
+                var data = repository.Adverts
+                    .First(a => a.ID == AdId);
+
+
+                AdViewModel model = new AdViewModel()
+                {
+                    Name = data.Name,
+                    Description = data.Description,
+                    Price = data.Price,
+                    PhoneNumber = data.User.PhoneNumber,
+                    UserName = data.User.Name,
+                    Status = data.Status.ToString(),
+                    Photos = data.Photos.Select(p => new PhotoModel() { ID = p.ID, Path = p.Path }).ToList(),
+                    Type = data.Type.Name
+                };
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
+        }
+
         public ViewResult List(Int32 page = 1)
         {
             var data = repository.GetFullAdvertsData
                 .Where(a => a.Status.ToString() != AdStatusModel.Stop.ToString())
-                //.ToList()
                 .Select(x => new AdvertModel()
                 {
                     ID = x.ID,
@@ -35,7 +62,7 @@ namespace PropertyForSale.Controllers
                     AdType = new AdTypeModel() { ID = x.Type.ID, Description = x.Type.Description, Name = x.Type.Name },
                     User = new ApplicationUserModel() { ID = x.User.Id, Name = x.User.Name },
                     Photos = x.Photos.Select(p => new PhotoModel() { ID = p.ID, Path = p.Path }).ToList(),
-                    //Status = x.Status.ToString()
+                    Status = x.Status.ToString() == AdStatusModel.Pause.ToString() ? AdStatusModel.Pause : AdStatusModel.Active
                 });
 
             ListViewModel model = new ListViewModel
