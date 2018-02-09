@@ -1,0 +1,19 @@
+﻿@using PropertyForSale.Models
+@model AdvertModel
+
+<div>
+    <h3>Name: @Model.Name</h3>
+    <p>ID: @Model.ID</p>
+    <p>Date: @Model.Date</p>
+    <p>Town: @Model.Town</p>
+    <p>Type: @Model.AdType.Name</p>
+    <p>User: @Model.User.Name</p>
+    @foreach (PhotoModel p in Model.Photos)
+    {
+        <p> Photo: @p.Path </p>
+    }
+    <p>Description: @Model.Description</p>
+    <p>Status: @Model.Status.ToString()</p>
+    <h4><span class="label label-primary">@Model.Price.ToString("# $")</span></h4>
+    <p> </p>
+</div>

@@ -15,7 +15,17 @@ namespace PropertyForSaleDomainModel.Concrete
 
         public IEnumerable<Advert> Adverts
         {
-            get { return context.Adverts; }
+            get
+            { return context.Adverts; }
+        }
+
+        public IEnumerable<Advert> GetFullAdvertsData
+        {
+            get
+            { return context.Adverts
+                    .Include("User")
+                    .Include("Type")
+                    .Include("Photos"); }
         }
     }
 }

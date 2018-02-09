@@ -15,7 +15,7 @@ namespace PropertyForSaleDomainModel.Mapping
             Property(a => a.Town).HasMaxLength(50).IsOptional();
             Property(a => a.Email).HasMaxLength(100).IsRequired();
             Property(a => a.PasswordHash).IsRequired();
-            Property(a => a.PhoneNumber).IsRequired();
+            Property(a => a.PhoneNumber).HasMaxLength(11).IsRequired();
             Property(a => a.UserName).HasMaxLength(31).IsRequired();
             Property(a => a.Name).HasMaxLength(40).IsRequired();
         }

@@ -1,22 +1,18 @@
-﻿@using PropertyForSaleDomainModel.Entities
-@model IEnumerable<Advert>
+﻿@using PropertyForSale.Models
+@model ListViewModel
 
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "List of advertisements";
 }
 
 <h2>@ViewBag.Title</h2>
 
-@foreach (var a in @Model)
+@foreach (var a in @Model.Adverts)
 {
-<div>
-    <h3>Name: @a.Name</h3>
-    <p>Town: @a.Town</p>
-    <p>Type: @a.Type.ToString()</p>
-    <p>Description: @a.Description</p>
-    <p>Status: @a.Status.ToString()</p>
-    <h4>@a.Price.ToString("# $")</h4>
-    <p> </p>
-</div>
+    @Html.Partial("_AdvertListPartial", a)
 }
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))
+</div>
+
 

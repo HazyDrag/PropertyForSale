@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace PropertyForSaleDomainModel.Entities
+namespace PropertyForSale.Models
 {
-    public class Photo
+    public class PhotoModel
     {
         public Int32 ID { get; set; }
         public String Path { get; set; }
         
-        public virtual Advert Advert { get; set; }
+        public AdvertModel Advert { get; set; }
     }
 }
