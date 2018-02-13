@@ -258,7 +258,7 @@ namespace PropertyForSale.Controllers
                     ID = x.ID,
                     Name = x.Name,
                 }).ToList();
-
+                
                 return View(model);
             }
 

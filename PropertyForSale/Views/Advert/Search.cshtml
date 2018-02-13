@@ -19,11 +19,11 @@
                     @Html.LabelFor(m => m.CurrentFilter.maxPrice, new { @class = "col-md-10" })
                     @Html.TextBoxFor(m => m.CurrentFilter.maxPrice, new { @class = "form-control" })
                     @Html.LabelFor(m => m.CurrentFilter.adTypeID, new { @class = "col-md-10" })
-                    @Html.DropDownListFor(m => m.CurrentFilter.adTypeID, new SelectList(Model.Types, "ID", "Name"), null, new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.CurrentFilter.adTypeID, new SelectList(Model.Types, "ID", "Name"), "All types", new { @class = "form-control" })
                     @Html.LabelFor(m => m.CurrentFilter.town, new { @class = "col-md-10" })
                     @Html.TextBoxFor(m => m.CurrentFilter.town, new { @class = "form-control" })
 
-                    <input type="submit" value="Search" class="btn btn-block btn-default btn-lg" />
+                    <input type="submit" value="Search" class="btn btn-block btn-default btn-lg" style="margin-top: 20px;" />
                 </div>
             </div>
             }
