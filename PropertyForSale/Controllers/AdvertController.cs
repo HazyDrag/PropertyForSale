@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading.Tasks;
 
 using PropertyForSale.Models;
 using PropertyForSaleDomainModel.Abstract;
+using Microsoft.AspNet.Identity;
+using System.Drawing;
+using PropertyForSaleDomainModel.Enums;
+using PropertyForSaleDomainModel.Entities;
 
 namespace PropertyForSale.Controllers
 {
@@ -14,6 +19,15 @@ namespace PropertyForSale.Controllers
         private IRepository repository;
         public int pageSize = 2;
 
+        private void SaveToFolder(Image img, string pathToSave)
+        {
+            // Get new resolution
+            using (System.Drawing.Image newImg = new Bitmap(img))
+            {
+                newImg.Save(Server.MapPath("~/Images/Ad/" + pathToSave), img.RawFormat);
+            }
+        }
+
         public AdvertController(IRepository repo)
         {
             repository = repo;
@@ -21,9 +35,26 @@ namespace PropertyForSale.Controllers
 
         //
         // GET: /Advert/AddAd
-        public ViewResult AddAd()
+        public ActionResult AddAd()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            //get list of property types
+            var data = repository.GetTypes()
+                .Select(x => new AdTypeModel
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                });
+
+            AddAdViewModel model = new AddAdViewModel
+            {
+                Types = data.ToList()
+            };
+
+            return View(model);
         }
 
         //
@@ -31,18 +62,69 @@ namespace PropertyForSale.Controllers
         [HttpPost]
         public ActionResult AddAd(AddAdViewModel model)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            if (!ModelState.IsValid)
+            {
+                //NEED TO FIX
+                model.Types=repository.GetTypes()
+                .Select(x => new AdTypeModel
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                }).ToList();
+                
+                return View(model);
+            }
 
-            return View();
+            Advert advert = new Advert
+            {
+                Name = model.Name,
+                Town = model.Town,
+                Description = model.Description,
+                Price = model.Price,
+                Date = DateTime.Now,
+                Type = new AdType
+                {
+                    ID = model.TypeID
+                },
+                Status = model.Status,
+                User = new ApplicationUser
+                {
+                    Id = User.Identity.GetUserId()
+                }
+            };
+
+            // Save image to folder and get path
+            if (model.Photo != null)
+            {
+                var imageName = String.Format("{0:yyyyMMdd-HHmmssfff}", DateTime.Now);
+                var extension = System.IO.Path.GetExtension(model.Photo.FileName).ToLower();
+                using (var img = System.Drawing.Image.FromStream(model.Photo.InputStream))
+                {
+                    String filename = String.Format("{0}{1}", imageName, extension);
+                    advert.Photos = new List<Photo>();
+                    advert.Photos.Add(new Photo
+                    {
+                        Path = filename
+                    });
+                    SaveToFolder(img, filename);
+                }
+            }
+    
+            Int32 modelID = repository.AddAdvert(advert);
+
+            return RedirectToAction("Ad", new { adId = modelID });
         }
 
-        public ViewResult Ad(Int32? AdId)
+        public ViewResult Ad(Int32 adId)
         {
             try
             {
-                var data = repository.Adverts
-                    .First(a => a.ID == AdId);
-
-
+                var data = repository.GetById(adId);
+                  
                 AdViewModel model = new AdViewModel()
                 {
                     Name = data.Name,
@@ -50,24 +132,14 @@ namespace PropertyForSale.Controllers
                     Price = data.Price,
                     PhoneNumber = data.User.PhoneNumber,
                     UserName = data.User.Name,
-                    Photos = data.Photos.Select(p => new PhotoModel() { ID = p.ID, Path = p.Path }).ToList(),
-                    Type = data.Type.Name
+                    Photos = data.Photos.Select(p => new PhotoModel()
+                    {
+                        ID = p.ID,
+                        Path = p.Path
+                    }).ToList(),
+                    Type = data.Type.Name,
+                    Status = data.Status
                 };
-                
-                switch (data.Status.ToString())
-                {
-                    case "Active":
-                        model.Status = AdStatusModel.Active;
-                        break;
-                    case "Pause":
-                        model.Status = AdStatusModel.Pause;
-                        break;
-                    case "Stop":
-                        model.Status = AdStatusModel.Stop;
-                        break;
-                    default:
-                        return View("Error");
-                }
 
                 return View(model);
             }
@@ -79,34 +151,34 @@ namespace PropertyForSale.Controllers
 
         public ViewResult List(Int32 page = 1)
         {
-            var data = repository.GetFullAdvertsData
-                .Where(a => a.Status.ToString() != AdStatusModel.Stop.ToString())
+            var data = repository.GetList(page, pageSize, new AdFilter(), AdStatus.Stop)
                 .Select(x => new AdvertModel()
                 {
                     ID = x.ID,
-                    Date = x.Date,
-                    Description = x.Description,
                     Name = x.Name,
                     Price = x.Price,
-                    Town = x.Town,
-                    AdType = new AdTypeModel() { ID = x.Type.ID, Description = x.Type.Description, Name = x.Type.Name },
-                    User = new ApplicationUserModel() { ID = x.User.Id, Name = x.User.Name },
-                    Photos = x.Photos.Select(p => new PhotoModel() { ID = p.ID, Path = p.Path }).ToList(),
-                    Status = x.Status.ToString() == AdStatusModel.Pause.ToString() ? AdStatusModel.Pause : AdStatusModel.Active
+                    AdType = new AdTypeModel()
+                    {
+                        ID = x.Type.ID,
+                        Description = x.Type.Description,
+                        Name = x.Type.Name
+                    },
+                    Photos = x.Photos.Select(p => new PhotoModel()
+                    {
+                        ID = p.ID,
+                        Path = p.Path,
+                    }).ToList()
                 });
 
             ListViewModel model = new ListViewModel
             {
-                Adverts = data
-                .OrderByDescending(advert => advert.Date)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize),
+                Adverts = data,
 
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
                     ItemsPerPage = pageSize,
-                    TotalItems = data.Count()
+                    TotalItems = repository.GetListCount(new AdFilter(), AdStatus.Stop)
                 }
             };
 

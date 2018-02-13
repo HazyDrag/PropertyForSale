@@ -17,6 +17,12 @@ namespace PropertyForSale
 
             routes.MapRoute(
                 name: null,
+                url: "Advert/Add",
+                defaults: new { controller = "Advert", action = "AddAd" }
+            );
+
+            routes.MapRoute(
+                name: null,
                 url: "Advert/{AdId}",
                 defaults: new { controller = "Advert", action = "Ad" }
             );
@@ -25,7 +31,7 @@ namespace PropertyForSale
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Advert", action = "List", id = UrlParameter.Optional }
-            );            
+            );
         }
     }
 }

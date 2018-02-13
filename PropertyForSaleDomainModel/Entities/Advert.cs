@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PropertyForSaleDomainModel.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace PropertyForSaleDomainModel.Entities

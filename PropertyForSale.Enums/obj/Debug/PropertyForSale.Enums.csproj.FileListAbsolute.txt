@@ -1,0 +1,6 @@
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale.Enums\bin\Debug\PropertyForSale.Enums.dll
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale.Enums\bin\Debug\PropertyForSale.Enums.pdb
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale.Enums\obj\Debug\PropertyForSale.Enums.csprojResolveAssemblyReference.cache
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale.Enums\obj\Debug\PropertyForSale.Enums.csproj.CoreCompileInputs.cache
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale.Enums\obj\Debug\PropertyForSale.Enums.dll
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale.Enums\obj\Debug\PropertyForSale.Enums.pdb

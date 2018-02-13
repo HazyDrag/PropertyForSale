@@ -236,3 +236,5 @@ C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale\bin\System.Threadin
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale\bin\WebActivatorEx.dll
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale\bin\Ninject.Web.Common.WebHost.dll
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale\bin\Ninject.Web.Common.WebHost.xml
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale\bin\PropertyForSale.Enums.dll
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSale\bin\PropertyForSale.Enums.pdb

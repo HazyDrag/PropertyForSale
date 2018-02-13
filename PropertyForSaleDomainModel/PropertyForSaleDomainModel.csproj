@@ -99,20 +99,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IRepository.cs" />
-    <Compile Include="Entities\AdStatus.cs" />
     <Compile Include="Entities\AdType.cs" />
+    <Compile Include="Entities\AdFilter.cs" />
     <Compile Include="Mapping\AdTypeMap.cs" />
     <Compile Include="Entities\Advert.cs" />
     <Compile Include="Mapping\AdvertMap.cs" />
     <Compile Include="Concrete\ApplicationDbContext.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Mapping\ApplicationUserMap.cs" />
-    <Compile Include="Concrete\PropertyRepository.cs" />
+    <Compile Include="Concrete\AdvertRepository.cs" />
     <Compile Include="Entities\Photo.cs" />
     <Compile Include="Mapping\PhotoMap.cs" />
     <Compile Include="Migrations\201802081245174_1.cs" />
     <Compile Include="Migrations\201802081245174_1.Designer.cs">
       <DependentUpon>201802081245174_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802121436475_2.cs" />
+    <Compile Include="Migrations\201802121436475_2.Designer.cs">
+      <DependentUpon>201802121436475_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +132,15 @@
     <EmbeddedResource Include="Migrations\201802081245174_1.resx">
       <DependentUpon>201802081245174_1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802121436475_2.resx">
+      <DependentUpon>201802121436475_2.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PropertyForSale.Enums\PropertyForSale.Enums.csproj">
+      <Project>{0B16984C-BF3D-4629-BA5A-C355EBF526C8}</Project>
+      <Name>PropertyForSale.Enums</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

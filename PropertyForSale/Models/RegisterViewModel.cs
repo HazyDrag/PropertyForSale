@@ -22,12 +22,12 @@ namespace PropertyForSale.Models
         public String ConfirmPassword { get; set; }
 
         [Required]
-        [Display(Name = "Ф.И.О.")]
+        [Display(Name = "Name")]
         public String Name { get; set; }
 
         [Required]
         [Phone]
-        [Display(Name = "Номер телефона")]
+        [Display(Name = "Phone number")]
         public String PhoneNumber { get; set; }
 
         [Required]

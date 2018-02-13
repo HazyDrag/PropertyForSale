@@ -32,7 +32,7 @@ namespace PropertyForSale.Infrastructure
 
         private void AddBindings()
         {
-            kernel.Bind<IRepository>().To<PropertyRepository>();
+            kernel.Bind<IRepository>().To<AdvertRepository>();
         }
     }
 }

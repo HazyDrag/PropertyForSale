@@ -41,3 +41,6 @@ C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\bin\Debu
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\obj\Debug\PropertyForSaleDomainModel.Migrations._1.resources
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\obj\Debug\PropertyForSaleDomainModel.csproj.GenerateResource.Cache
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\bin\Debug\PropertyForSale.Enums.dll
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\bin\Debug\PropertyForSale.Enums.pdb
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\obj\Debug\PropertyForSaleDomainModel.Migrations._2.resources

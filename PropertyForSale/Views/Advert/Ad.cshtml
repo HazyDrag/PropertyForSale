@@ -1,4 +1,5 @@
 ﻿@using PropertyForSale.Models
+@using PropertyForSaleDomainModel.Enums
 @model AdViewModel
 
 @{
@@ -9,18 +10,20 @@
         <tr>
             <td>
                 <h1>@Model.Name</h1>
+                <h4>Status: 
                 @switch (Model.Status)
                 {
-                    case AdStatusModel.Active:
-                        <h4>Status: <span class="label label-success">@Model.Status.ToString()</span></h4>
+                    case AdStatus.Active:
+                        <span class="label label-success">@Model.Status.ToString()</span>
                         break;
-                    case AdStatusModel.Pause:
-                        <h4>Status: <span class="label label-warning">@Model.Status.ToString()</span></h4>
+                    case AdStatus.Pause:
+                        <span class="label label-warning">@Model.Status.ToString()</span>
                         break;
-                    case AdStatusModel.Stop:
-                        <h4>Status: <span class="label label-danger">@Model.Status.ToString()</span></h4>
+                    case AdStatus.Stop:
+                        <span class="label label-danger">@Model.Status.ToString()</span>
                         break;
                 }
+                </h4>
                 <p>Type: @Model.Type</p>
                 @if (Model.Photos.Count > 0)
                 {

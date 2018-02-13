@@ -57,7 +57,7 @@ namespace PropertyForSale.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(String returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -116,7 +116,7 @@ namespace PropertyForSale.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("List", "Advert");
                 }
                 AddErrors(result);
             }
@@ -288,7 +288,7 @@ namespace PropertyForSale.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("List", "Advert");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

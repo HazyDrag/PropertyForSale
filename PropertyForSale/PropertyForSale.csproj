@@ -234,7 +234,6 @@
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\AddAdViewModel.cs" />
-    <Compile Include="Models\AdStatusModel.cs" />
     <Compile Include="Models\AdTypeModel.cs" />
     <Compile Include="Models\AdvertModel.cs" />
     <Compile Include="Models\AdViewModel.cs" />
@@ -350,6 +349,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PropertyForSale.Enums\PropertyForSale.Enums.csproj">
+      <Project>{0B16984C-BF3D-4629-BA5A-C355EBF526C8}</Project>
+      <Name>PropertyForSale.Enums</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PropertyForSaleDomainModel\PropertyForSaleDomainModel.csproj">
       <Project>{c7f92427-b003-4a06-80e1-98c6b2c7bab1}</Project>
       <Name>PropertyForSaleDomainModel</Name>

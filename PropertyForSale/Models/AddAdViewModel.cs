@@ -1,40 +1,45 @@
-﻿using System;
+﻿using PropertyForSaleDomainModel.Enums;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PropertyForSale.Models
 {
     public class AddAdViewModel
     {
-        [HiddenInput(DisplayValue = false)]
-        public Int32 ID { get; set; }
-
         [Required]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Name must be from 3 to 100 characters")]
         [Display(Name = "Name")]
         public String Name { get; set; }
 
         [Required]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Town must be from 3 to 50 characters")]
         [Display(Name = "Town")]
         public String Town { get; set; }
 
         [Required]
+        [StringLength(400, MinimumLength = 3, ErrorMessage = "Description must be from 3 to 400 characters")]
         [Display(Name = "Description")]
         public String Description { get; set; }
 
         [Required]
         [Display(Name = "Price")]
-        [RegularExpression("[0-9]", ErrorMessage = "Type only numbers")]
+        [RegularExpression("[0-9]*$", ErrorMessage = "Price is not correct")]
         public Decimal Price { get; set; }
 
         [Required]
         [Display(Name = "Type")]
-        public AdTypeModel Type { get; set; }
+        public Int32 TypeID { get; set; }
+
+        public List<AdTypeModel> Types { get; set; }
 
         [Required]
         [Display(Name = "Status")]
-        public AdStatusModel Status { get; set; }
+        public AdStatus Status { get; set; }
         
         [Display(Name = "Photo")]
-        public PhotoModel Photo { get; set; }
+        public HttpPostedFileBase Photo { get; set; }
     }
 }
