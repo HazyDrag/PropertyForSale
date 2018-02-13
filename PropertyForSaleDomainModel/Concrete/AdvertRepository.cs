@@ -42,7 +42,7 @@ namespace PropertyForSaleDomainModel.Concrete
                 .Where(a => a.Price >= filter.minPrice || filter.minPrice == null)
                 .Where(a => a.Price <= filter.maxPrice || filter.maxPrice == null)
                 .Where(a => a.Town == filter.town || filter.town == null)
-                .Where(a => a.Type == filter.adType || filter.adType == null)
+                .Where(a => a.Type.ID == filter.adTypeID || filter.adTypeID == null)
                 .Count();
         }
 
@@ -58,7 +58,7 @@ namespace PropertyForSaleDomainModel.Concrete
                 .Where(a => a.Price >= filter.minPrice || filter.minPrice == null)
                 .Where(a => a.Price <= filter.maxPrice || filter.maxPrice == null)
                 .Where(a => a.Town == filter.town || filter.town == null)
-                .Where(a => a.Type == filter.adType || filter.adType == null)
+                .Where(a => a.Type.ID == filter.adTypeID || filter.adTypeID == null)
                 .OrderByDescending(a => a.Date)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);

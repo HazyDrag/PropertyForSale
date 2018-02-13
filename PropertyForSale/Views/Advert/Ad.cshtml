@@ -40,14 +40,21 @@
                 <h1>
                     <span class="label label-primary">@Model.Price.ToString("# $")</span>
                 </h1>
-            </td>
+            </td>            
             <td>
                 <blockquote>
                     <h3>Contacts:</h3>
+                    @if (Model.Status == AdStatus.Active)
+                    {
                     <p>Name: @Model.UserName</p>
                     <p>Phone number: @Model.PhoneNumber</p>
+                    }
+                    else
+                    {
+                        <p>Advertisement is paused</p>
+                    }
                 </blockquote>
-            </td>
+            </td>            
         </tr>
     </table>
 </div>

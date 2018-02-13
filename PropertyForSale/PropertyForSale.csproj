@@ -234,6 +234,7 @@
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\AddAdViewModel.cs" />
+    <Compile Include="Models\AdFilterModel.cs" />
     <Compile Include="Models\AdTypeModel.cs" />
     <Compile Include="Models\AdvertModel.cs" />
     <Compile Include="Models\AdViewModel.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Models\PhotoModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -340,6 +342,7 @@
     <Content Include="Views\Shared\_AdvertListPartial.cshtml" />
     <Content Include="Views\Advert\Ad.cshtml" />
     <Content Include="Views\Advert\AddAd.cshtml" />
+    <Content Include="Views\Advert\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

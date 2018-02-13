@@ -12,8 +12,8 @@ namespace PropertyForSaleDomainModel.Entities
 
         public Int32? maxPrice { get; set; }
 
-        public String town { get; set; }
+        public Int32? adTypeID { get; set; }
 
-        public AdType adType { get; set; }
+        public String town { get; set; }
     }
 }

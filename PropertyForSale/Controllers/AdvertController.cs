@@ -130,8 +130,8 @@ namespace PropertyForSale.Controllers
                     Name = data.Name,
                     Description = data.Description,
                     Price = data.Price,
-                    PhoneNumber = data.User.PhoneNumber,
-                    UserName = data.User.Name,
+                    UserName = "",
+                    PhoneNumber = "",
                     Photos = data.Photos.Select(p => new PhotoModel()
                     {
                         ID = p.ID,
@@ -140,6 +140,12 @@ namespace PropertyForSale.Controllers
                     Type = data.Type.Name,
                     Status = data.Status
                 };
+
+                if(model.Status == AdStatus.Active)
+                {
+                    model.UserName = data.User.Name;
+                    model.PhoneNumber = data.User.PhoneNumber;
+                }
 
                 return View(model);
             }
@@ -183,6 +189,80 @@ namespace PropertyForSale.Controllers
             };
 
             return View(model);
+        }
+
+        public ViewResult Search(Int32? minPrice, Int32? maxPrice, Int32? adTypeID, String town, Int32 page = 1)
+        {
+            SearchViewModel model = new SearchViewModel()
+            {
+                CurrentFilter = new AdFilterModel()
+                {
+                    minPrice = minPrice,
+                    maxPrice = maxPrice,
+                    adTypeID = adTypeID,
+                    town = town
+                },
+                Types = repository.GetTypes()
+                .Select(x => new AdTypeModel
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                }).ToList()
+            };
+
+            AdFilter adFilter = new AdFilter
+            {
+                minPrice = model.CurrentFilter.minPrice,
+                maxPrice = model.CurrentFilter.maxPrice,
+                town = model.CurrentFilter.town,
+                adTypeID = model.CurrentFilter.adTypeID
+            };
+
+            model.PagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = pageSize,
+                TotalItems = repository.GetListCount(adFilter, AdStatus.Stop)
+            };
+
+            model.Adverts = repository.GetList(model.PagingInfo.CurrentPage, model.PagingInfo.ItemsPerPage, adFilter, AdStatus.Stop)
+                .Select(x => new AdvertModel()
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Price = x.Price,
+                    AdType = new AdTypeModel()
+                    {
+                        ID = x.Type.ID,
+                        Description = x.Type.Description,
+                        Name = x.Type.Name
+                    },
+                    Photos = x.Photos.Select(p => new PhotoModel()
+                    {
+                        ID = p.ID,
+                        Path = p.Path,
+                    }).ToList()
+                });
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Search(SearchViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Types = repository.GetTypes()
+                .Select(x => new AdTypeModel
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                }).ToList();
+
+                return View(model);
+            }
+
+            return RedirectToAction("Search", new { model.CurrentFilter.minPrice, model.CurrentFilter.maxPrice, model.CurrentFilter.adTypeID, model.CurrentFilter.town });
         }
     }
 }
