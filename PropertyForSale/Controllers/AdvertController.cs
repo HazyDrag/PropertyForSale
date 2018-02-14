@@ -169,6 +169,8 @@ namespace PropertyForSale.Controllers
             return RedirectToAction("Ad", new { adId = modelID });
         }
 
+        //
+        // GET: /Advert/Id/{Id}
         public ViewResult Ad(Int32 adId)
         {
             try
@@ -283,25 +285,12 @@ namespace PropertyForSale.Controllers
                         Description = x.Type.Description,
                         Name = x.Type.Name
                     },
+                    UserID = x.User.Id,
                     Photos = GetPhotosOfAdvert(x)
                 })
             };
 
             return View(model);
         }
-
-        /*
-        [HttpPost]
-        public ActionResult Search(SearchViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.Types = GetTypesOfProperty();
-
-                return View(model);
-            }
-
-            return RedirectToAction("Search", new { model.CurrentFilter.MinPrice, model.CurrentFilter.MaxPrice, model.CurrentFilter.AdTypeID, model.CurrentFilter.Town });
-        }*/
     }
 }
