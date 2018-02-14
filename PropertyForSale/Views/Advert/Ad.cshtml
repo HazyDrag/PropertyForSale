@@ -10,6 +10,7 @@
         <tr>
             <td>
                 <h1>@Model.Name</h1>
+                @Html.Partial("_EditBUttonPartial")
                 <h4>Status: 
                 @switch (Model.Status)
                 {

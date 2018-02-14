@@ -5,7 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 
-using PropertyForSaleDomainModel.Concrete;
+using PropertyForSaleDomainModel.DbContext;
 using PropertyForSaleDomainModel.Entities;
 
 namespace PropertyForSale

@@ -345,6 +345,8 @@
     <Content Include="Views\Advert\AddAd.cshtml" />
     <Content Include="Views\Advert\Search.cshtml" />
     <Content Include="Views\Advert\Edit.cshtml" />
+    <Content Include="Views\Shared\_ManageAdPartial.cshtml" />
+    <Content Include="Views\Shared\_EditButtonPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />

@@ -98,15 +98,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IRepository.cs" />
+    <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Entities\AdType.cs" />
     <Compile Include="Mapping\AdTypeMap.cs" />
     <Compile Include="Entities\Advert.cs" />
     <Compile Include="Mapping\AdvertMap.cs" />
-    <Compile Include="Concrete\ApplicationDbContext.cs" />
+    <Compile Include="DbContext\ApplicationDbContext.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Mapping\ApplicationUserMap.cs" />
-    <Compile Include="Concrete\AdvertRepository.cs" />
+    <Compile Include="Repository\AdvertRepository.cs" />
     <Compile Include="Entities\Photo.cs" />
     <Compile Include="Mapping\PhotoMap.cs" />
     <Compile Include="Migrations\201802081245174_1.cs" />

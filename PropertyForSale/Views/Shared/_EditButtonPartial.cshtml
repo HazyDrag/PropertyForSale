@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated && User.Identity.GetUserId() == Model.UserID)
+{
+    <button type="button" class="btn btn-info btn-xs pull-right">
+        <span class="glyphicon glyphicon-edit"></span>
+        @Html.ActionLink(" Edit", "Edit", new { AdId = Model.ID })
+    </button>
+}

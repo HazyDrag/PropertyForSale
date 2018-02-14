@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using PropertyForSaleDomainModel.Abstract;
+using PropertyForSaleDomainModel.DbContext;
 using PropertyForSaleDomainModel.Entities;
 using PropertyForSaleDomainModel.Enums;
 
-namespace PropertyForSaleDomainModel.Concrete
+namespace PropertyForSaleDomainModel.Repository
 {
     public class AdvertRepository : IRepository
     {
@@ -15,11 +15,11 @@ namespace PropertyForSaleDomainModel.Concrete
         {
             if (ad.ID == 0)
             {
-                ad.User = _context.Users
+                ad.User = Context.Users
                     .Where(u => u.Id == ad.User.Id)
                     .FirstOrDefault();
 
-                ad.Type = _context.AdTypes
+                ad.Type = Context.AdTypes
                     .Where(t => t.ID == ad.Type.ID)
                     .FirstOrDefault();
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using PropertyForSaleDomainModel.Entities;
 using PropertyForSaleDomainModel.Enums;
 
-namespace PropertyForSaleDomainModel.Abstract
+namespace PropertyForSaleDomainModel.Repository
 {
     public interface IRepository
     {

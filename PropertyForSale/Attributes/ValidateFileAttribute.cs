@@ -12,7 +12,7 @@ namespace PropertyForSale.Attributes
             var file = value as HttpPostedFileBase;
             if (file == null)
             {
-                return false;
+                return true;
             }
 
             if (file.ContentLength > 10 * 1024 * 1024)

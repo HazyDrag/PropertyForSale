@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 using PropertyForSale.Models;
-using PropertyForSaleDomainModel.Abstract;
-using Microsoft.AspNet.Identity;
-using System.Drawing;
 using PropertyForSaleDomainModel.Enums;
 using PropertyForSaleDomainModel.Entities;
+using PropertyForSaleDomainModel.Repository;
 
 namespace PropertyForSale.Controllers
 {
@@ -39,19 +38,53 @@ namespace PropertyForSale.Controllers
         public List<PhotoModel> GetPhotosOfAdvert(Advert x)
         {
             return x.Photos.Count > 0 
-                ? x.Photos.Select(p => new PhotoModel()
+                ? x.Photos.Select(p => new PhotoModel
                 {
                     ID = p.ID,
                     Path = defaultPhotoPath + p.Path,
                 }).ToList()
-                : new List<PhotoModel>()
+                : new List<PhotoModel>
                 {
-                    new PhotoModel()
+                    new PhotoModel
                     {
                         Path = defaultPhotoPath + defaultPhotoName,
                     }
                 };
         }
+
+        public Photo SavedPhoto(HttpPostedFileBase photo)
+        {
+            Photo savedPhoto = null;
+
+            // Save image to folder and get path
+            if (photo != null)
+            {
+                var imageName = String.Format("{0:yyyyMMdd-HHmmssfff}", DateTime.Now);
+                var extension = System.IO.Path.GetExtension(photo.FileName).ToLower();
+                using (var img = System.Drawing.Image.FromStream(photo.InputStream))
+                {
+                    String filename = String.Format("{0}{1}", imageName, extension);
+
+                    using (System.Drawing.Image newImg = new Bitmap(img))
+                    {
+                        try
+                        {
+                            newImg.Save(Server.MapPath(defaultPhotoPath + filename), img.RawFormat);
+                            savedPhoto = new Photo
+                            {
+                                Path = filename
+                            };
+                        }
+                        catch
+                        {
+                            savedPhoto = null;
+                        }
+                    }
+                }
+            }
+            return savedPhoto;
+        }
+
 
         //
         // GET: /Advert/Edit
@@ -63,7 +96,7 @@ namespace PropertyForSale.Controllers
             }
 
             var data = _repository.GetById(AdId);
-            EditAdViewModel model = new EditAdViewModel()
+            EditAdViewModel model = new EditAdViewModel
             {
                 Name = data.Name,
                 Description = data.Description,
@@ -71,24 +104,9 @@ namespace PropertyForSale.Controllers
                 Status = data.Status,
                 TypeID = data.Type.ID,
                 Town = data.Town,
-                Types = GetTypesOfProperty()
+                Types = GetTypesOfProperty(),
+                OldPhoto = GetPhotosOfAdvert(data)[0]
             };
-
-            if (data.Photos.Count > 0)
-            {
-                model.OldPhoto = new PhotoModel()
-                {
-                    ID = data.Photos[0].ID,
-                    Path = defaultPhotoPath + data.Photos[0].Path
-                };
-            }
-            else
-            {
-                model.OldPhoto = new PhotoModel()
-                {
-                    Path = defaultPhotoPath + defaultPhotoName
-                };
-            }
 
             return View(model);
         }
@@ -144,26 +162,15 @@ namespace PropertyForSale.Controllers
                 }
             };
 
-            // Save image to folder and get path
-            if (model.NewPhoto != null)
+            Photo newPhoto = SavedPhoto(model.NewPhoto);
+            if (newPhoto != null)
             {
-                var imageName = String.Format("{0:yyyyMMdd-HHmmssfff}", DateTime.Now);
-                var extension = System.IO.Path.GetExtension(model.NewPhoto.FileName).ToLower();
-                using (var img = System.Drawing.Image.FromStream(model.NewPhoto.InputStream))
-                {
-                    String filename = String.Format("{0}{1}", imageName, extension);
-                    advert.Photos = new List<Photo>();
-                    advert.Photos.Add(new Photo
+                advert.Photos = new List<Photo>
                     {
-                        Path = filename
-                    });
-                    using (System.Drawing.Image newImg = new Bitmap(img))
-                    {
-                        newImg.Save(Server.MapPath(defaultPhotoPath + filename), img.RawFormat);
-                    }
-                }
+                        newPhoto
+                    };
             }
-    
+
             Int32 modelID = _repository.SaveAdvert(advert);
 
             return RedirectToAction("Ad", new { adId = modelID });
@@ -176,15 +183,32 @@ namespace PropertyForSale.Controllers
             try
             {
                 var data = _repository.GetById(adId);
-                  
-                AdViewModel model = new AdViewModel()
+
+                AdvertModel model1 = new AdvertModel
                 {
+                    ID = adId,
+                    Name = data.Name,
+                    Description = data.Description,
+                    Price = data.Price,
+                    UserID = data.User.Id,
+                    Photos = GetPhotosOfAdvert(data),
+                    AdType = new AdTypeModel
+                    {
+                        Name = data.Type.Name
+                    },
+                    Status = data.Status
+                };
+                  
+                AdViewModel model = new AdViewModel
+                {
+                    ID = adId,
                     Name = data.Name,
                     Description = data.Description,
                     Price = data.Price,
                     UserName = "",
                     PhoneNumber = "",
                     Photos = GetPhotosOfAdvert(data),
+                    UserID = data.User.Id,
                     Type = data.Type.Name,
                     Status = data.Status
                 };
@@ -237,8 +261,9 @@ namespace PropertyForSale.Controllers
 
             return View(model);
         }
-
-        [HttpGet]
+        
+        //
+        //GET: Advert/Search/
         public ViewResult Search(SearchViewModel modelWithFilter = null, Int32 page = 1)
         {
             if (!ModelState.IsValid)

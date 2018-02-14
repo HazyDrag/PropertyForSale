@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Web.Mvc;
-using Moq;
 using Ninject;
 
-using PropertyForSaleDomainModel.Concrete;
-using PropertyForSaleDomainModel.Abstract;
+using PropertyForSaleDomainModel.Repository;
 
 namespace PropertyForSale.Infrastructure
 {
