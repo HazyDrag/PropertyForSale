@@ -1,28 +1,40 @@
-﻿@using PropertyForSale.Models
-@model AdvertModel
+﻿@using Microsoft.AspNet.Identity
+@model PropertyForSale.Models.AdvertModel
 
 <div class="well">
     <table>
         <tr>
             <td>
-                @if (Model.Photos.Count > 0)
-                {
-                    <img src="~/Images/Ad/@Model.Photos[0].Path" width="500" alt="advert image" style="margin-right: 20px;">
-                }
-                else
-                {
-                    <img src="~/Images/Ad/defaultAdImage.jpg" width="500" alt="advert image" style="margin-right: 20px;">
-                }
+                <img src="@Model.Photos.FirstOrDefault().Path" width="500" alt="advert image" style="margin-right: 20px;">
             </td>
             <td>
                 <table>
-                    <tr><td ><h3>@Html.ActionLink(Model.Name, "Ad", new { AdId = Model.ID })</h3></td></tr>
-                    <tr><td style="padding-bottom: 150px;"> <h3>Type: @Model.AdType.Name</h3></td></tr>
-                    <tr><td>
-                        <h1>
-                            <span class="pull-right label label-primary">@Model.Price.ToString("# $")</span>
-                        </h1>
-                    </td></tr>
+                    <tr>
+                        <td>
+                            <h3>@Html.ActionLink(Model.Name, "Ad", new { AdId = Model.ID })</h3>
+                        </td>
+                        <td>
+                            @if (Request.IsAuthenticated && User.Identity.GetUserId() == Model.UserID)
+                            {
+                            <button type="button" class="btn btn-info btn-xs pull-right">
+                                <span class="glyphicon glyphicon-edit"></span>
+                                @Html.ActionLink(" Edit", "Edit", new { AdId = Model.ID })
+                            </button>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 150px;"> 
+                            <h3>Type: @Model.AdType.Name</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h1>
+                                <span class="pull-right label label-primary">@Model.Price.ToString("# $")</span>
+                            </h1>
+                        </td>
+                    </tr>
                 </table>
             </td>
         </tr>

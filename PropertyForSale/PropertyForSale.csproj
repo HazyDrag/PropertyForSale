@@ -233,12 +233,13 @@
     </Compile>
     <Compile Include="HtmlHelpers\PagingHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Attributes\ValidateFileAttribute.cs" />
     <Compile Include="Models\AddAdViewModel.cs" />
-    <Compile Include="Models\AdFilterModel.cs" />
     <Compile Include="Models\AdTypeModel.cs" />
     <Compile Include="Models\AdvertModel.cs" />
     <Compile Include="Models\AdViewModel.cs" />
     <Compile Include="Models\ApplicationUserModel.cs" />
+    <Compile Include="Models\EditAdViewModel.cs" />
     <Compile Include="Models\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\ListViewModel.cs" />
@@ -343,8 +344,10 @@
     <Content Include="Views\Advert\Ad.cshtml" />
     <Content Include="Views\Advert\AddAd.cshtml" />
     <Content Include="Views\Advert\Search.cshtml" />
+    <Content Include="Views\Advert\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Abstract\" />
     <Folder Include="App_Data\" />
     <Folder Include="Images\Ad\" />
   </ItemGroup>

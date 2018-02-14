@@ -8,46 +8,46 @@
     <h1>@ViewBag.Title</h1>
 </div>
 
-<div class="row panel">    
+<div class="row panel" style="padding-bottom: 10px;">    
     <section id="AddAdForm">
-            @using (Html.BeginForm("Search", "Advert", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Search", "Advert",new { page = 2 }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
             {
             <div id="categories" class="col-xs-3">
                 <div class="col-md-10">
-                    @Html.LabelFor(m => m.CurrentFilter.minPrice, new { @class = "col-md-10" })
-                    @Html.TextBoxFor(m => m.CurrentFilter.minPrice, new { @class = "form-control" })
-                    @Html.LabelFor(m => m.CurrentFilter.maxPrice, new { @class = "col-md-10" })
-                    @Html.TextBoxFor(m => m.CurrentFilter.maxPrice, new { @class = "form-control" })
-                    @Html.LabelFor(m => m.CurrentFilter.adTypeID, new { @class = "col-md-10" })
-                    @Html.DropDownListFor(m => m.CurrentFilter.adTypeID, new SelectList(Model.Types, "ID", "Name"), "All types", new { @class = "form-control" })
-                    @Html.LabelFor(m => m.CurrentFilter.town, new { @class = "col-md-10" })
-                    @Html.TextBoxFor(m => m.CurrentFilter.town, new { @class = "form-control" })
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    @Html.LabelFor(m => m.MinPrice, new { @class = "col-md-10" })
+                    @Html.TextBoxFor(m => m.MinPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
+                    @Html.LabelFor(m => m.MaxPrice, new { @class = "col-md-10" })
+                    @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control" })
+                    @Html.LabelFor(m => m.AdTypeID, new { @class = "col-md-10" })
+                    @Html.DropDownListFor(m => m.AdTypeID, new SelectList(Model.Types, "ID", "Name"), "All types", new { @class = "form-control" })
+                    @Html.LabelFor(m => m.Town, new { @class = "col-md-10" })
+                    @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
 
                     <input type="submit" value="Search" class="btn btn-block btn-default btn-lg" style="margin-top: 20px;" />
                 </div>
             </div>
+            <div class="col-xs-8">
+                @foreach (var a in @Model.Adverts)
+                {
+                    @Html.Partial("_AdvertListPartial", a)
+                }
+                <div class="btn-group pull-right">
+                    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Search",
+                new
+                {
+                    controller = "Advert",
+                    action = "Search",
+                    MinPrice = Model.MinPrice,
+                    MaxPrice = Model.MaxPrice,
+                    AdTypeID = Model.AdTypeID,
+                    Town = Model.Town,
+                    page = x
+                }))
+                </div>         
+            </div>
             }
         </section>
-        <div class="col-xs-8">
-        @foreach (var a in @Model.Adverts)
-        {
-            @Html.Partial("_AdvertListPartial", a)
-        }
-
-            <div class="btn-group pull-right">
-                @Html.PageLinks(Model.PagingInfo, x => Url.Action("Search",
-            new
-            {
-                controller = "Advert",
-                action = "Search",
-                minPrice = Model.CurrentFilter.minPrice,
-                maxPrice = Model.CurrentFilter.maxPrice,
-                adTypeID = Model.CurrentFilter.adTypeID,
-                town = Model.CurrentFilter.town,
-                page = x
-            }))
-            </div>         
-        </div>
 </div>
 
 

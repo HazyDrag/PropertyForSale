@@ -25,17 +25,10 @@
                 }
                 </h4>
                 <p>Type: @Model.Type</p>
-                @if (Model.Photos.Count > 0)
-                {
-                    foreach (PhotoModel p in Model.Photos)
+                @foreach (PhotoModel p in Model.Photos)
                     {
-                        <img src="~/Images/Ad/@p.Path" width="500" alt="advert image">
-                    }
-                }
-                else
-                {
-                <img src="~/Images/Ad/defaultAdImage.jpg" width="500" alt="advert image">
-                }
+                        <img src="@p.Path" width="500" alt="advert image">
+                    }                    
                 <p>@Model.Description</p>
                 <h1>
                     <span class="label label-primary">@Model.Price.ToString("# $")</span>

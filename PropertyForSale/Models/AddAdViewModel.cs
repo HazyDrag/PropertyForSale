@@ -1,9 +1,10 @@
-﻿using PropertyForSaleDomainModel.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
-using System.Web.Mvc;
+
+using PropertyForSale.Attributes;
+using PropertyForSaleDomainModel.Enums;
 
 namespace PropertyForSale.Models
 {
@@ -40,6 +41,7 @@ namespace PropertyForSale.Models
         public AdStatus Status { get; set; }
         
         [Display(Name = "Photo")]
-        public HttpPostedFileBase Photo { get; set; }
+        [ValidateFile(ErrorMessage = "Please select a PNG or JPEG image smaller than 10MB")]
+        public HttpPostedFileBase NewPhoto { get; set; }
     }
 }

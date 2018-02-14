@@ -100,7 +100,6 @@
   <ItemGroup>
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Entities\AdType.cs" />
-    <Compile Include="Entities\AdFilter.cs" />
     <Compile Include="Mapping\AdTypeMap.cs" />
     <Compile Include="Entities\Advert.cs" />
     <Compile Include="Mapping\AdvertMap.cs" />

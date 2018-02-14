@@ -21,12 +21,6 @@ namespace PropertyForSale
                 defaults: new { controller = "Advert", action = "AddAd" }
             );
 
-            /*routes.MapRoute(
-                name: null,
-                url: "Advert/Search/Page{page}",
-                defaults: new { controller = "Advert", action = "Search" }
-            );*/
-
             routes.MapRoute(
                 name: null,
                 url: "Advert/Id/{AdId}",

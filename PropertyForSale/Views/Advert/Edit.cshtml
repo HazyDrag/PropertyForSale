@@ -1,9 +1,9 @@
 ﻿@using PropertyForSaleDomainModel.Enums
 @using PropertyForSale.Models
-@model AddAdViewModel
+@model EditAdViewModel
 
 @{
-    ViewBag.Title = "AddAd";
+    ViewBag.Title = "Edit advertisement";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,28 +11,27 @@
 <div class="row">
     <div class="col-md-8">
         <section id="AddAdForm">
-            @using (Html.BeginForm("AddAd", "Advert", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Edit", "Advert", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
-                <h4>Create a new advertisement.</h4>
                 <hr />
                 @Html.ValidationSummary("", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.Town, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
+                        @Html.TextBoxFor(m => m.Town, new { @class = "form-control"})
                     </div>
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "5" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -50,29 +49,26 @@
                 <div class="form-group">
                     @Html.LabelFor(m => m.Status, new { @class = "col-md-2 control-label" })
                     <div class="col-md-1">
-                        <label class="radio-inline">
-                            @Html.RadioButtonFor(m => m.Status, AdStatus.Active, new { @*class = "form-control"*@ })
-                            Active
-                        </label>
-                        <label class="radio-inline">
-                        @Html.RadioButtonFor(m => m.Status, AdStatus.Pause, new { @*class = "form-control"*@ })
-                        Pause
-                        </label>
-                        <label class="radio-inline">
-                        @Html.RadioButtonFor(m => m.Status, AdStatus.Stop, new { @*class = "form-control"*@ })
-                        Stop</label>
+                        @Html.RadioButtonFor(m => m.Status, AdStatus.Active, new { @class = "form-control" })
+                        <p>Active</p>
+                        @Html.RadioButtonFor(m => m.Status, AdStatus.Pause, new { @class = "form-control" })
+                        <p>Pause</p>
+                        @Html.RadioButtonFor(m => m.Status, AdStatus.Stop, new { @class = "form-control" })
+                        <p>Stop</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Photo, new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(m => m.NewPhoto, new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Photo, new { accept = "image/x-png, image/jpeg", type = "file", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Photo, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.NewPhoto, new { accept = "image/x-png, image/jpeg", type = "file", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NewPhoto, "", new { @class = "text-danger" })
+                        <img src="@Model.OldPhoto.Path" width="300" alt="advert image" style="padding-top: 10px;">
+                        <hr />
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Add" class="btn btn-block btn-default" />
+                        <input type="submit" value="Edit" class="btn btn-block btn-default" />
                     </div>
                 </div>
             }

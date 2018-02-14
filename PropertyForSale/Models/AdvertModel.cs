@@ -1,6 +1,7 @@
-﻿using PropertyForSaleDomainModel.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+
+using PropertyForSaleDomainModel.Enums;
 
 namespace PropertyForSale.Models
 {
@@ -12,9 +13,9 @@ namespace PropertyForSale.Models
         public String Name { get; set; }
         public String Town { get; set; }
         public String Description { get; set; }
+        public String UserID { get; set; }
 
         public AdStatus Status { get; set; }
-        public ApplicationUserModel User { get; set; }
         public AdTypeModel AdType { get; set; }
 
         public List<PhotoModel> Photos { get; set; }
