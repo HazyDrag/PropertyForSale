@@ -44,3 +44,4 @@ C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\obj\Debu
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\bin\Debug\PropertyForSale.Enums.dll
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\bin\Debug\PropertyForSale.Enums.pdb
 C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\obj\Debug\PropertyForSaleDomainModel.Migrations._2.resources
+C:\Users\Dmitry\source\repos\PropertyForSale\PropertyForSaleDomainModel\obj\Debug\PropertyForSaleDomainModel.Migrations._3.resources

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -108,6 +106,8 @@ namespace PropertyForSale.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            model.PhoneNumber = Regex.Replace(model.PhoneNumber, @"[^0-9]", "");
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, Name = model.Name , RegistrationDate = DateTime.Now};
@@ -231,7 +231,7 @@ namespace PropertyForSale.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("List", "Advert");
         }
 
         //

@@ -4,7 +4,7 @@
     <table>
         <tr>
             <td>
-                <img src="@Model.Photos.FirstOrDefault().Path" width="500" alt="advert image" style="margin-right: 20px;">
+                @Html.Partial("_ImageAdPartial", @Model.Photos.FirstOrDefault().Path)
             </td>
             <td>
                 <table>

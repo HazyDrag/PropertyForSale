@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-8">
         <section id="AddAdForm">
-            @using (Html.BeginForm("Edit", "Advert", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Edit", "Advert", new { id = Model.Id },FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.Partial("_ManageAdPartial", Model)

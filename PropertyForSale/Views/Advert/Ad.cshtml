@@ -1,6 +1,6 @@
 ﻿@using PropertyForSale.Models
 @using PropertyForSaleDomainModel.Enums
-@model AdViewModel
+@model AdvertModel
 
 @{
     ViewBag.Title = "Ad";
@@ -10,7 +10,7 @@
         <tr>
             <td>
                 <h1>@Model.Name</h1>
-                @Html.Partial("_EditBUttonPartial")
+                @Html.Partial("_EditButtonPartial")
                 <h4>Status: 
                 @switch (Model.Status)
                 {
@@ -25,10 +25,10 @@
                         break;
                 }
                 </h4>
-                <p>Type: @Model.Type</p>
+                <p>Type: @Model.AdType.Name</p>
                 @foreach (PhotoModel p in Model.Photos)
                     {
-                        <img src="@p.Path" width="500" alt="advert image">
+                    @Html.Partial("_ImageAdPartial", @p.Path)
                     }                    
                 <p>@Model.Description</p>
                 <h1>
@@ -40,8 +40,8 @@
                     <h3>Contacts:</h3>
                     @if (Model.Status == AdStatus.Active)
                     {
-                    <p>Name: @Model.UserName</p>
-                    <p>Phone number: @Model.PhoneNumber</p>
+                    <p>Name: @Model.User.Name</p>
+                    <p>Phone number: @Model.User.PhoneNumber</p>
                     }
                     else
                     {

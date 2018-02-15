@@ -11,6 +11,9 @@ namespace PropertyForSale.Models
     public class AddAdViewModel
     {
         [Required]
+        public Int32 Id { get; set; }
+
+        [Required]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Name must be from 3 to 100 characters")]
         [Display(Name = "Name")]
         public String Name { get; set; }

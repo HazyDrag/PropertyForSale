@@ -98,6 +98,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201802150822525_3.cs" />
+    <Compile Include="Migrations\201802150822525_3.Designer.cs">
+      <DependentUpon>201802150822525_3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Entities\AdType.cs" />
     <Compile Include="Mapping\AdTypeMap.cs" />
@@ -133,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802121436475_2.resx">
       <DependentUpon>201802121436475_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802150822525_3.resx">
+      <DependentUpon>201802150822525_3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

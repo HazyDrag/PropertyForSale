@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
+using PropertyForSale.Attributes;
+
 namespace PropertyForSale.Models
 {
 
@@ -26,7 +28,7 @@ namespace PropertyForSale.Models
         public String Name { get; set; }
 
         [Required]
-        [Phone]
+        [PhoneNumber(ErrorMessage = "Phone number can contain only digits and symbols .:[]()-+/#$&*\nAnd must be 10 characters long at least and 16 at max")]
         [Display(Name = "Phone number")]
         public String PhoneNumber { get; set; }
 

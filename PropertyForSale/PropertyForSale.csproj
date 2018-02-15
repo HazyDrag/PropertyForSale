@@ -224,9 +224,9 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Attributes\PhoneNumberAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdvertController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -237,7 +237,6 @@
     <Compile Include="Models\AddAdViewModel.cs" />
     <Compile Include="Models\AdTypeModel.cs" />
     <Compile Include="Models\AdvertModel.cs" />
-    <Compile Include="Models\AdViewModel.cs" />
     <Compile Include="Models\ApplicationUserModel.cs" />
     <Compile Include="Models\EditAdViewModel.cs" />
     <Compile Include="Models\ForgotPasswordViewModel.cs" />
@@ -314,7 +313,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\AccessError.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -347,6 +346,8 @@
     <Content Include="Views\Advert\Edit.cshtml" />
     <Content Include="Views\Shared\_ManageAdPartial.cshtml" />
     <Content Include="Views\Shared\_EditButtonPartial.cshtml" />
+    <Content Include="Views\Shared\_ImageAdPartial.cshtml" />
+    <Content Include="Views\Shared\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />

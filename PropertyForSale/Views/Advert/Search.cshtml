@@ -10,7 +10,7 @@
 
 <div class="row panel" style="padding-bottom: 10px;">    
     <section id="AddAdForm">
-            @using (Html.BeginForm("Search", "Advert",new { page = 2 }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Search", "Advert", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
             {
             <div id="categories" class="col-xs-3">
                 <div class="col-md-10">
@@ -18,7 +18,7 @@
                     @Html.LabelFor(m => m.MinPrice, new { @class = "col-md-10" })
                     @Html.TextBoxFor(m => m.MinPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
                     @Html.LabelFor(m => m.MaxPrice, new { @class = "col-md-10" })
-                    @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
                     @Html.LabelFor(m => m.AdTypeID, new { @class = "col-md-10" })
                     @Html.DropDownListFor(m => m.AdTypeID, new SelectList(Model.Types, "ID", "Name"), "All types", new { @class = "form-control" })
                     @Html.LabelFor(m => m.Town, new { @class = "col-md-10" })

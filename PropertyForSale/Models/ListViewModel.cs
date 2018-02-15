@@ -6,6 +6,6 @@ namespace PropertyForSale.Models
     {
         public IEnumerable<AdvertModel> Adverts { get; set; }
 
-        public PagingInfo PagingInfo { get; set; }
+        public PagingInfo PagingInfo { get; set; }        
     }
 }

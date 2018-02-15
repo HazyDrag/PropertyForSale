@@ -13,10 +13,10 @@ namespace PropertyForSale.Models
         public String Name { get; set; }
         public String Town { get; set; }
         public String Description { get; set; }
-        public String UserID { get; set; }
 
         public AdStatus Status { get; set; }
         public AdTypeModel AdType { get; set; }
+        public ApplicationUserModel User { get; set; }
 
         public List<PhotoModel> Photos { get; set; }
     }

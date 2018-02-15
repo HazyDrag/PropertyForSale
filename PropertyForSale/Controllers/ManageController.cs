@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+
 using PropertyForSale.Models;
+using PropertyForSaleDomainModel.Entities;
 
 namespace PropertyForSale.Controllers
 {
@@ -15,7 +17,7 @@ namespace PropertyForSale.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        
         public ManageController()
         {
         }
@@ -56,23 +58,54 @@ namespace PropertyForSale.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangeCredentialsSuccess ? "Your credentials has been changed"
+                : message == ManageMessageId.Error ? "Error! Please try again later"
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var data = await UserManager.FindByIdAsync(userId);
+
             var model = new IndexViewModel
             {
+                Town = data.Town,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                Email = await UserManager.GetEmailAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             return View(model);
+        }
+
+        // POST: /Manage/Index
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Index(IndexViewModel model)
+        {
+            model.PhoneNumber = Regex.Replace(model.PhoneNumber, @"[^0-9]", "");
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUser user = await UserManager.FindByIdAsync(userId);
+            user.PhoneNumber = model.PhoneNumber;
+            user.Town = model.Town;
+            user.Email = model.Email;
+
+            var result = await UserManager.UpdateAsync(user);
+
+            ManageMessageId? message;
+            if (result.Succeeded)
+            {
+                message = ManageMessageId.ChangeCredentialsSuccess;
+            }
+            else
+            {
+                message = ManageMessageId.Error;
+            }
+            return RedirectToAction("Index", new { Message = message });
         }
 
         //
@@ -212,6 +245,7 @@ namespace PropertyForSale.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            ChangeCredentialsSuccess,
             Error
         }
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PropertyForSale.Models
 {
-    public class SearchViewModel
+    public class SearchViewModel : ListViewModel
     {
         [Display(Name = "Minimal price")]
         [RegularExpression("[0-9]*$", ErrorMessage = "Minimal price is not correct")]
@@ -20,10 +20,6 @@ namespace PropertyForSale.Models
 
         [Display(Name = "Town")]
         public String Town { get; set; }
-
-        public IEnumerable<AdvertModel> Adverts { get; set; }
-
-        public PagingInfo PagingInfo { get; set; }
 
         public List<AdTypeModel> Types { get; set; }
     }

@@ -35,6 +35,38 @@ namespace PropertyForSale.Controllers
                 }).ToList();
         }
 
+        private ListViewModel GetFilteredListViewModel(Int32 page, Int32? minPrice, Int32? maxPrice, Int32? adTypeID, String town, AdStatus? excludedStatus, String userID)
+        {
+            return new ListViewModel
+            {
+                Adverts = _repository.GetList(page, pageSize, minPrice, maxPrice, adTypeID, town, excludedStatus, userID)
+                .Select(x => new AdvertModel()
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    Price = x.Price,
+                    AdType = new AdTypeModel()
+                    {
+                        ID = x.Type.ID,
+                        Description = x.Type.Description,
+                        Name = x.Type.Name
+                    },
+                    Photos = GetPhotosOfAdvert(x),
+                    User = new ApplicationUserModel
+                    {
+                        ID = x.User.Id
+                    }
+                }).ToList(),
+
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = pageSize,
+                    TotalItems = _repository.GetListCount(minPrice, maxPrice, adTypeID, town, excludedStatus, userID)
+                }
+            };
+        }
+
         public List<PhotoModel> GetPhotosOfAdvert(Advert x)
         {
             return x.Photos.Count > 0 
@@ -88,16 +120,24 @@ namespace PropertyForSale.Controllers
 
         //
         // GET: /Advert/Edit
+        [Authorize]
         public ViewResult Edit(Int32 AdId)
         {
-            if (!User.Identity.IsAuthenticated || User.Identity.GetUserId() != _repository.GetById(AdId).User.Id)
+            var data = _repository.GetById(AdId);
+
+            if (data == null)
             {
-                return View("Error");
+                return View("Error404");
             }
 
-            var data = _repository.GetById(AdId);
+            if (User.Identity.GetUserId() != data.User.Id)
+            {
+                return View("AccessError");
+            }
+
             EditAdViewModel model = new EditAdViewModel
             {
+                Id = AdId,
                 Name = data.Name,
                 Description = data.Description,
                 Price = data.Price,
@@ -112,14 +152,63 @@ namespace PropertyForSale.Controllers
         }
 
         //
-        // GET: /Advert/AddAd
-        public ActionResult AddAd()
+        // POST: /Advert/Edit
+        [HttpPost]
+        [Authorize]
+        public ActionResult Edit(EditAdViewModel model, Int32 id)
         {
-            if (!User.Identity.IsAuthenticated)
+            var data = _repository.GetById(id);
+            if (data == null)
             {
-                return RedirectToAction("Login", "Account");
+                return View("Error404");
+            }
+            if (User.Identity.GetUserId() != data.User.Id)
+            {
+                return View("AccessError");
+            }
+            if (!ModelState.IsValid)
+            {
+                model.Types = GetTypesOfProperty();
+                model.Id = id;
+                model.OldPhoto = GetPhotosOfAdvert(data)[0];
+
+                View(model);
             }
 
+            Advert advert = new Advert
+            {
+                ID = id,
+                Name = model.Name,
+                Date = DateTime.Now,
+                Description = model.Description,
+                Price = model.Price,
+                Town = model.Town,
+                Status = model.Status,
+                Type = new AdType
+                {
+                    ID = model.TypeID
+                }
+            };
+
+            Photo newPhoto = SavedPhoto(model.NewPhoto);
+            if (newPhoto != null)
+            {
+                advert.Photos = new List<Photo>
+                    {
+                        newPhoto
+                    };
+            }
+
+            Int32 modelID = _repository.SaveAdvert(advert);
+
+            return RedirectToAction("Ad", new { adId = modelID });
+        }
+
+        //
+        // GET: /Advert/AddAd
+        [Authorize]
+        public ViewResult AddAd()
+        {
             AddAdViewModel model = new AddAdViewModel
             {
                 Types = GetTypesOfProperty()
@@ -131,12 +220,9 @@ namespace PropertyForSale.Controllers
         //
         // POST: /Advert/AddAd
         [HttpPost]
+        [Authorize]
         public ActionResult AddAd(AddAdViewModel model)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Account");
-            }
             if (!ModelState.IsValid)
             {
                 model.Types = GetTypesOfProperty();
@@ -180,92 +266,88 @@ namespace PropertyForSale.Controllers
         // GET: /Advert/Id/{Id}
         public ViewResult Ad(Int32 adId)
         {
-            try
+            var data = _repository.GetById(adId);
+
+            if (data == null)
             {
-                var data = _repository.GetById(adId);
-
-                AdvertModel model1 = new AdvertModel
+                return View("Error404");
+            }
+            if (data.Status == AdStatus.Stop)
+            {
+                if (!Request.IsAuthenticated || User.Identity.GetUserId() != data.User.Id)
                 {
-                    ID = adId,
-                    Name = data.Name,
-                    Description = data.Description,
-                    Price = data.Price,
-                    UserID = data.User.Id,
-                    Photos = GetPhotosOfAdvert(data),
-                    AdType = new AdTypeModel
-                    {
-                        Name = data.Type.Name
-                    },
-                    Status = data.Status
-                };
-                  
-                AdViewModel model = new AdViewModel
-                {
-                    ID = adId,
-                    Name = data.Name,
-                    Description = data.Description,
-                    Price = data.Price,
-                    UserName = "",
-                    PhoneNumber = "",
-                    Photos = GetPhotosOfAdvert(data),
-                    UserID = data.User.Id,
-                    Type = data.Type.Name,
-                    Status = data.Status
-                };
-
-                if(model.Status == AdStatus.Active)
-                {
-                    model.UserName = data.User.Name;
-                    model.PhoneNumber = data.User.PhoneNumber;
+                    return View("AccessError");
                 }
+            }
 
-                return View(model);
-            }
-            catch (Exception)
+            AdvertModel model = new AdvertModel
             {
-                return View("Error");
+                ID = adId,
+                Name = data.Name,
+                Description = data.Description,
+                Price = data.Price,
+                User = new ApplicationUserModel
+                {
+                    ID = data.User.Id,
+                },
+                Photos = GetPhotosOfAdvert(data),
+                AdType = new AdTypeModel
+                {
+                    Name = data.Type.Name
+                },
+                Status = data.Status
+            };
+
+            if (model.Status == AdStatus.Active)
+            {
+                model.User.Name = data.User.Name;
+                model.User.PhoneNumber = data.User.PhoneNumber;
             }
+
+            return View(model);
         }
 
         //
         //GET: /
         public ViewResult List(Int32 page = 1)
         {
-            var data = _repository.GetList(page, pageSize, null, null, null, null, AdStatus.Stop)
-                .Select(x => new AdvertModel()
-                {
-                    ID = x.ID,
-                    Name = x.Name,
-                    Price = x.Price,
-                    AdType = new AdTypeModel()
-                    {
-                        ID = x.Type.ID,
-                        Description = x.Type.Description,
-                        Name = x.Type.Name
-                    },
-                    Photos = GetPhotosOfAdvert(x),
-                    UserID = x.User.Id
-                });
-
-            ListViewModel model = new ListViewModel
+            if (page < 1)
             {
-                Adverts = data,
+                return View("Error404");
+            }
+            ListViewModel model = GetFilteredListViewModel(page, null, null, null, null, AdStatus.Stop, null);
 
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = pageSize,
-                    TotalItems = _repository.GetListCount(null, null, null, null, AdStatus.Stop)
-                }
-            };
+            ViewBag.Title = "List of advertisements";
+            ViewBag.CurrentAction = "List";
 
             return View(model);
+        }
+
+        [Authorize]
+        public ViewResult MyList(Int32 page = 1)
+        {
+            if (page < 1)
+            {
+                return View("Error404");
+            }
+            var userID = User.Identity.GetUserId();
+            
+            ListViewModel model = GetFilteredListViewModel(page, null, null, null, null, null, userID);
+
+            ViewBag.Title = "My advertisements";
+            ViewBag.CurrentAction = "MyList";
+
+            return View("List", model);
         }
         
         //
         //GET: Advert/Search/
         public ViewResult Search(SearchViewModel modelWithFilter = null, Int32 page = 1)
         {
+            if (page < 1)
+            {
+                return View("Error404");
+            }
             if (!ModelState.IsValid)
             {
                 modelWithFilter.Types = GetTypesOfProperty();
@@ -285,6 +367,8 @@ namespace PropertyForSale.Controllers
                 modelWithFilter = new SearchViewModel();
             }
 
+            ListViewModel listModel = GetFilteredListViewModel(page, modelWithFilter.MinPrice, modelWithFilter.MaxPrice, modelWithFilter.AdTypeID, modelWithFilter.Town, AdStatus.Stop, null);
+
             SearchViewModel model = new SearchViewModel()
             {
                 MinPrice = modelWithFilter.MinPrice,
@@ -292,27 +376,8 @@ namespace PropertyForSale.Controllers
                 AdTypeID = modelWithFilter.AdTypeID,
                 Town = modelWithFilter.Town,
                 Types = GetTypesOfProperty(),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = pageSize,
-                    TotalItems = _repository.GetListCount(modelWithFilter.MinPrice, modelWithFilter.MaxPrice, modelWithFilter.AdTypeID, modelWithFilter.Town, AdStatus.Stop)
-                },
-                Adverts = _repository.GetList(page, pageSize, modelWithFilter.MinPrice, modelWithFilter.MaxPrice, modelWithFilter.AdTypeID, modelWithFilter.Town, AdStatus.Stop)
-                .Select(x => new AdvertModel()
-                {
-                    ID = x.ID,
-                    Name = x.Name,
-                    Price = x.Price,
-                    AdType = new AdTypeModel()
-                    {
-                        ID = x.Type.ID,
-                        Description = x.Type.Description,
-                        Name = x.Type.Name
-                    },
-                    UserID = x.User.Id,
-                    Photos = GetPhotosOfAdvert(x)
-                })
+                PagingInfo = listModel.PagingInfo,
+                Adverts = listModel.Adverts
             };
 
             return View(model);
