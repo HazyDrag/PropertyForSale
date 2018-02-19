@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 using PropertyForSale.Attributes;
-using PropertyForSaleDomainModel.Enums;
+using PropertyForSale.Enums;
 
 namespace PropertyForSale.Models
 {
@@ -28,9 +28,10 @@ namespace PropertyForSale.Models
         [Display(Name = "Description")]
         public String Description { get; set; }
 
+        
         [Required]
         [Display(Name = "Price")]
-        [RegularExpression("[0-9]*$", ErrorMessage = "Price is not correct")]
+        [Price(ErrorMessage = "Price may contain only 18 digits max where 2 digits after separator")]
         public Decimal Price { get; set; }
 
         [Required]

@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Property for Sale</title>
+    @Styles.Render("~/Content/signin.css")
+    @Styles.Render("~/Content/advert.css")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -21,9 +23,9 @@
                     <a href="/"><img src="~/Images/logo.png" width="100" class="img-responsive" alt="logo"></a>
                 </div>
             </div>
-            <ul class="nav navbar-nav navbar-left">
-                <li>@Html.ActionLink("Property for sale", "List", "Advert")</li>
-                <li class="nav justify-content-end">@Html.ActionLink("Search", "Search", "Advert")</li>
+            <ul class="nav navbar-nav">
+                @*<li>@Html.ActionLink("Property for sale", "List", "Advert")</li>*@
+                <li>@Html.ActionLink("Search", "Search", "Advert")</li>
             </ul>
             <div class="navbar-collapse collapse">
                 @Html.Partial("_LoginPartial")

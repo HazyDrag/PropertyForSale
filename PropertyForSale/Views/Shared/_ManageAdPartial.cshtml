@@ -1,41 +1,44 @@
-﻿@using PropertyForSaleDomainModel.Enums
+﻿@using PropertyForSale.Enums
 @model PropertyForSale.Models.AddAdViewModel
 
-<hr />
-@Html.ValidationSummary("", new { @class = "text-danger" })
 <div class="form-group">
     @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    <div class="col-md-4">
         @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.Town, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    <div class="col-md-4">
         @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Town, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    <div class="col-md-4">
         @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = "8" })
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", min = "0", step = "1" })
+    <div class="col-md-4">
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control"})
+        @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.TypeID, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    <div class="col-md-4">
         @Html.DropDownListFor(m => m.TypeID, new SelectList(Model.Types, "ID", "Name"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TypeID, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.Status, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    <div class="col-md-4">
         <label class="radio-inline">
             @Html.RadioButtonFor(m => m.Status, AdStatus.Active)
             Active
@@ -48,11 +51,12 @@
             @Html.RadioButtonFor(m => m.Status, AdStatus.Stop)
             Stop
         </label>
+        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
     @Html.LabelFor(m => m.NewPhoto, new { @class = "control-label col-md-2" })
-    <div class="col-md-10">
+    <div class="col-md-4">
         @Html.TextBoxFor(m => m.NewPhoto, new { accept = "image/x-png, image/jpeg", type = "file", @class = "form-control" })
         @Html.ValidationMessageFor(m => m.NewPhoto, "", new { @class = "text-danger" })
     </div>

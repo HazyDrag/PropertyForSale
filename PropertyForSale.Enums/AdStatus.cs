@@ -1,4 +1,4 @@
-﻿namespace PropertyForSaleDomainModel.Enums
+﻿namespace PropertyForSale.Enums
 {
     public enum AdStatus
     {

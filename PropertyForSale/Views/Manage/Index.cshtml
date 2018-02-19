@@ -4,54 +4,51 @@
     ViewBag.Title = "Manage";
 }
 
-<h2>@ViewBag.Title.</h2>
-
-<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="page-header">
+        <h1>@ViewBag.Title</h1>
+        <h4>Change your account settings</h4>
+</div>
 <div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="form-group">
-        <label class="col-md-2 control-label">.</label>
-        <div class="col-md-10">
-            @Html.ActionLink("My advertisements", "MyList", "Advert", new { }, new { @class="btn btn-primary" })
-        </div>
-    </div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            @Html.ActionLink("Change your password", "ChangePassword")
-        </dd>
-    </dl>
     @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
-        <hr />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                @Html.ActionLink("My advertisements", "MyList", "Advert", new { }, new { @class = "btn btn-primary btn-lg btn-block" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                @Html.ActionLink("Change password", "ChangePassword", new { }, new { @class = "btn btn-warning btn-lg btn-block" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                 @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Town, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.ValidationMessageFor(m => m.Town, "", new { @class = "text-danger" })
                 @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
+            <div class="col-md-4">
                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save changes" class="btn btn-default" />
+            <div class="col-md-offset-2 col-md-4">
+                <input type="submit" value="Save changes" class="btn btn-primary btn-block" />
+                <p class="text-success">@ViewBag.StatusMessage</p>
             </div>
         </div>
     }
 </div>
+

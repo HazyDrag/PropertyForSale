@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 
+using PropertyForSale.Enums;
 using PropertyForSale.Models;
-using PropertyForSaleDomainModel.Enums;
 using PropertyForSaleDomainModel.Entities;
 using PropertyForSaleDomainModel.Repository;
 
@@ -16,16 +19,19 @@ namespace PropertyForSale.Controllers
     public class AdvertController : Controller
     {
         private IRepository _repository;
-        public Int32 pageSize = 2;
-        public String defaultPhotoPath = "/Images/Ad/";
-        public String defaultPhotoName = "defaultAdImage.jpg";
+        private Int32 _pageSize = 2;
+        private String _defaultPhotoPath = "/Images/Ad/";
+        private String _originalPhotoPath = "Original/";
+        private String _standartPhotoPath = "Standart/";
+        private String _smallPhotoPath = "Small/";
+        private String _defaultPhotoName = "defaultAdImage.jpg";
         
         public AdvertController(IRepository repo)
         {
             _repository = repo;
         }
 
-        public List<AdTypeModel> GetTypesOfProperty()
+        private List<AdTypeModel> GetTypesOfProperty()
         {
             return _repository.GetTypes()
                 .Select(x => new AdTypeModel
@@ -39,7 +45,7 @@ namespace PropertyForSale.Controllers
         {
             return new ListViewModel
             {
-                Adverts = _repository.GetList(page, pageSize, minPrice, maxPrice, adTypeID, town, excludedStatus, userID)
+                Adverts = _repository.GetList(page, _pageSize, minPrice, maxPrice, adTypeID, town, excludedStatus, userID)
                 .Select(x => new AdvertModel()
                 {
                     ID = x.ID,
@@ -51,7 +57,7 @@ namespace PropertyForSale.Controllers
                         Description = x.Type.Description,
                         Name = x.Type.Name
                     },
-                    Photos = GetPhotosOfAdvert(x),
+                    Photos = GetPhotosOfAdvert(x, PhotoSize.Standart),
                     User = new ApplicationUserModel
                     {
                         ID = x.User.Id
@@ -61,30 +67,58 @@ namespace PropertyForSale.Controllers
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,
-                    ItemsPerPage = pageSize,
+                    ItemsPerPage = _pageSize,
                     TotalItems = _repository.GetListCount(minPrice, maxPrice, adTypeID, town, excludedStatus, userID)
                 }
             };
         }
 
-        public List<PhotoModel> GetPhotosOfAdvert(Advert x)
+        private List<PhotoModel> GetPhotosOfAdvert(Advert x, PhotoSize photoSize)
         {
-            return x.Photos.Count > 0 
-                ? x.Photos.Select(p => new PhotoModel
+            String photoSizePath = 
+                photoSize == PhotoSize.Standart ? _standartPhotoPath
+                : photoSize == PhotoSize.Small ? _smallPhotoPath
+                : _originalPhotoPath;
+
+            List<PhotoModel> photos;
+
+            if (x.Photos.Count > 0)
+            {
+                photos = x.Photos.Select(p => new PhotoModel
                 {
                     ID = p.ID,
-                    Path = defaultPhotoPath + p.Path,
-                }).ToList()
-                : new List<PhotoModel>
+                    Path = p.Path,
+                }).ToList();
+            }
+            else
+            {
+                photos = new List<PhotoModel>
                 {
                     new PhotoModel
                     {
-                        Path = defaultPhotoPath + defaultPhotoName,
+                        Path = _defaultPhotoName,
                     }
                 };
+            }
+
+            foreach (PhotoModel p in photos)
+            {
+                String fullPhotoSizePath = Server.MapPath(_defaultPhotoPath + photoSizePath + p.Path);
+                String fullOriginalPhotoPath = Server.MapPath(_defaultPhotoPath + _originalPhotoPath + p.Path);
+
+                if (!System.IO.File.Exists(fullPhotoSizePath))
+                {
+                    Image imgPhoto = Image.FromFile(fullOriginalPhotoPath);
+                    
+                    ReSize(imgPhoto, photoSize).Save(fullPhotoSizePath);
+                }
+                p.Path = _defaultPhotoPath + photoSizePath + p.Path;
+            }
+
+            return photos;
         }
 
-        public Photo SavedPhoto(HttpPostedFileBase photo)
+        private Photo SavePhoto(HttpPostedFileBase photo)
         {
             Photo savedPhoto = null;
 
@@ -92,16 +126,16 @@ namespace PropertyForSale.Controllers
             if (photo != null)
             {
                 var imageName = String.Format("{0:yyyyMMdd-HHmmssfff}", DateTime.Now);
-                var extension = System.IO.Path.GetExtension(photo.FileName).ToLower();
-                using (var img = System.Drawing.Image.FromStream(photo.InputStream))
+                var extension = Path.GetExtension(photo.FileName).ToLower();
+                using (var img = Image.FromStream(photo.InputStream))
                 {
                     String filename = String.Format("{0}{1}", imageName, extension);
 
-                    using (System.Drawing.Image newImg = new Bitmap(img))
+                    using (Image newImg = new Bitmap(img))
                     {
                         try
                         {
-                            newImg.Save(Server.MapPath(defaultPhotoPath + filename), img.RawFormat);
+                            newImg.Save(Server.MapPath(_defaultPhotoPath + _originalPhotoPath + filename), img.RawFormat);
                             savedPhoto = new Photo
                             {
                                 Path = filename
@@ -117,6 +151,68 @@ namespace PropertyForSale.Controllers
             return savedPhoto;
         }
 
+        private Image ReSize(Image imgPhoto, PhotoSize photoSize)
+        {
+            Int32 width;
+            Int32 height;
+            Int32 sourceWidth = imgPhoto.Width;
+            Int32 sourceHeight = imgPhoto.Height;
+            Int32 sourceX = 0;
+            Int32 sourceY = 0;
+            Int32 destX = 0;
+            Int32 destY = 0;
+
+            Single nPercent = 0;
+            Single nPercentW = 0;
+            Single nPercentH = 0;
+
+            if (photoSize == PhotoSize.Standart)
+            {
+                width = 500;
+                height = 333;
+            }
+            else
+            {
+                width = 280;
+                height = 186;
+            }
+
+            nPercentW = ((Single)width / (Single)sourceWidth);
+            nPercentH = ((Single)height / (Single)sourceHeight);
+            if (nPercentH < nPercentW)
+            {
+                nPercent = nPercentH;
+                destX = Convert.ToInt16((width -
+                              (sourceWidth * nPercent)) / 2);
+            }
+            else
+            {
+                nPercent = nPercentW;
+                destY = Convert.ToInt16((height -
+                              (sourceHeight * nPercent)) / 2);
+            }
+
+            Int32 destWidth = (Int32)(sourceWidth * nPercent);
+            Int32 destHeight = (Int32)(sourceHeight * nPercent);
+
+            Bitmap bmPhoto = new Bitmap(width, height,
+                              PixelFormat.Format24bppRgb);
+            bmPhoto.SetResolution(imgPhoto.HorizontalResolution,
+                             imgPhoto.VerticalResolution);
+
+            Graphics grPhoto = Graphics.FromImage(bmPhoto);
+            grPhoto.Clear(Color.White);
+            grPhoto.InterpolationMode =
+                    InterpolationMode.HighQualityBicubic;
+
+            grPhoto.DrawImage(imgPhoto,
+                new Rectangle(destX, destY, destWidth, destHeight),
+                new Rectangle(sourceX, sourceY, sourceWidth, sourceHeight),
+                GraphicsUnit.Pixel);
+
+            grPhoto.Dispose();
+            return bmPhoto;
+        }
 
         //
         // GET: /Advert/Edit
@@ -145,7 +241,7 @@ namespace PropertyForSale.Controllers
                 TypeID = data.Type.ID,
                 Town = data.Town,
                 Types = GetTypesOfProperty(),
-                OldPhoto = GetPhotosOfAdvert(data)[0]
+                OldPhoto = GetPhotosOfAdvert(data, PhotoSize.Small)[0]
             };
 
             return View(model);
@@ -170,9 +266,9 @@ namespace PropertyForSale.Controllers
             {
                 model.Types = GetTypesOfProperty();
                 model.Id = id;
-                model.OldPhoto = GetPhotosOfAdvert(data)[0];
+                model.OldPhoto = GetPhotosOfAdvert(data, PhotoSize.Small)[0];
 
-                View(model);
+                return View(model);
             }
 
             Advert advert = new Advert
@@ -190,7 +286,7 @@ namespace PropertyForSale.Controllers
                 }
             };
 
-            Photo newPhoto = SavedPhoto(model.NewPhoto);
+            Photo newPhoto = SavePhoto(model.NewPhoto);
             if (newPhoto != null)
             {
                 advert.Photos = new List<Photo>
@@ -248,7 +344,7 @@ namespace PropertyForSale.Controllers
                 }
             };
 
-            Photo newPhoto = SavedPhoto(model.NewPhoto);
+            Photo newPhoto = SavePhoto(model.NewPhoto);
             if (newPhoto != null)
             {
                 advert.Photos = new List<Photo>
@@ -290,7 +386,7 @@ namespace PropertyForSale.Controllers
                 {
                     ID = data.User.Id,
                 },
-                Photos = GetPhotosOfAdvert(data),
+                Photos = GetPhotosOfAdvert(data, PhotoSize.Standart),
                 AdType = new AdTypeModel
                 {
                     Name = data.Type.Name
@@ -355,7 +451,7 @@ namespace PropertyForSale.Controllers
                 modelWithFilter.PagingInfo = new PagingInfo()
                 {
                     TotalItems = 0,
-                    ItemsPerPage = pageSize,
+                    ItemsPerPage = _pageSize,
                     CurrentPage = 0
                 };
 

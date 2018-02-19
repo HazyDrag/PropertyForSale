@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using PropertyForSale.Enums;
 using PropertyForSaleDomainModel.DbContext;
 using PropertyForSaleDomainModel.Entities;
-using PropertyForSaleDomainModel.Enums;
 
 namespace PropertyForSaleDomainModel.Repository
 {
@@ -61,7 +61,7 @@ namespace PropertyForSaleDomainModel.Repository
                 .Where(a => a.Status != excludedStatus || excludedStatus == null)
                 .Where(a => a.Price >= minPrice || minPrice == null)
                 .Where(a => a.Price <= maxPrice || maxPrice == null)
-                .Where(a => a.Town.Trim() == town.Trim() || town == null)
+                .Where(a => a.Town.Replace(" ","") == town.Replace(" ", "") || town == null)
                 .Where(a => a.Type.ID == adTypeID || adTypeID == null)
                 .Where(a => a.User.Id == userID || userID == null)
                 .Count();

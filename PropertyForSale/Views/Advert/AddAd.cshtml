@@ -1,27 +1,25 @@
-﻿@using PropertyForSaleDomainModel.Enums
+﻿@using PropertyForSale.Enums
 @using PropertyForSale.Models
 @model AddAdViewModel
 
 @{
-    ViewBag.Title = "AddAd";
+    ViewBag.Title = "New advertisement";
 }
 
-<h2>@ViewBag.Title</h2>
-
-<div class="row">
-    <div class="col-md-8">
-        <section id="AddAdForm">
-            @using (Html.BeginForm("AddAd", "Advert", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>Create a new advertisement.</h4>
-                @Html.Partial("_ManageAdPartial", Model)
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Add" class="btn btn-block btn-default" />
-                    </div>
-                </div>
-            }
-        </section>
-    </div>
+<div class="page-header">
+    <h1>@ViewBag.Title</h1>
 </div>
+
+<div class="panel-group">
+    @using (Html.BeginForm("AddAd", "Advert", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Partial("_ManageAdPartial", Model)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <input type="submit" value="Add" class="btn btn-block btn-default" />
+            </div>
+        </div>
+    }
+</div>
+

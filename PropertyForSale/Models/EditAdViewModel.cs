@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 using PropertyForSale.Attributes;
-using PropertyForSaleDomainModel.Enums;
+using PropertyForSale.Enums;
 
 namespace PropertyForSale.Models
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using PropertyForSale.Enums;
 using PropertyForSaleDomainModel.Entities;
-using PropertyForSaleDomainModel.Enums;
 
 namespace PropertyForSaleDomainModel.Repository
 {

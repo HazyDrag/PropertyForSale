@@ -1,35 +1,30 @@
 ﻿@model PropertyForSale.Models.AdvertModel
 
-<div class="well">
-    <table>
-        <tr>
-            <td>
-                @Html.Partial("_ImageAdPartial", @Model.Photos.FirstOrDefault().Path)
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <td>
-                            <h3>@Html.ActionLink(Model.Name, "Ad", new { AdId = Model.ID })</h3>
-                        </td>
-                        <td>
-                            @Html.Partial("_EditButtonPartial")
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-bottom: 150px;"> 
-                            <h3>Type: @Model.AdType.Name</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h1>
-                                <span class="pull-right label label-primary">@Model.Price.ToString("# $")</span>
-                            </h1>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+<div class="panel panel-default">
+    <div class="panel-body" style="position:relative;">
+        <div class="col-md-6">
+            <img src="@Model.Photos.FirstOrDefault().Path" alt="advert image" style="margin-right: 20px;">
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-9">
+                    <h2 class="adname">
+                        @Html.ActionLink(Model.Name, "Ad", new { AdId = Model.ID })
+                    </h2>
+                </div>
+                <div class="col-md-3">
+                    @Html.Partial("_EditButtonPartial")
+                </div>
+            </div>
+            <div class="col-md-12">
+                <h4>Type: @Model.AdType.Name</h4>
+            </div>
+
+        </div>
+        <div class="ad-price">
+            <h1>
+                <span class="label label-success">@Model.Price.ToString("# $")</span>
+            </h1>
+        </div>
+    </div>
 </div>

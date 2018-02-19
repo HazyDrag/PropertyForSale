@@ -1,5 +1,5 @@
 ﻿@using PropertyForSale.Models
-@using PropertyForSaleDomainModel.Enums
+@using PropertyForSale.Enums
 @model AdvertModel
 
 @{
@@ -28,7 +28,7 @@
                 <p>Type: @Model.AdType.Name</p>
                 @foreach (PhotoModel p in Model.Photos)
                     {
-                    @Html.Partial("_ImageAdPartial", @p.Path)
+                        <img src="@p.Path" alt="advert image" style="margin-right: 20px;">
                     }                    
                 <p>@Model.Description</p>
                 <h1>

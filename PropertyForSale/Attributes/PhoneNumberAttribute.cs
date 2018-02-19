@@ -12,11 +12,14 @@ namespace PropertyForSale.Attributes
             if (value != null)
             {
                 String phoneNumber = Regex.Replace(value.ToString(), @"[-+.#$&)(:/*]", "");
-                if (Double.TryParse(phoneNumber, out Double Num))
+                if (!Regex.IsMatch(phoneNumber, "[^0-9]"))
                 {
-                    if (phoneNumber.Count() < 17 && phoneNumber.Count() > 9)
+                    if (Double.TryParse(phoneNumber, out Double Num))
                     {
-                        return true;
+                        if (phoneNumber.Count() < 17 && phoneNumber.Count() > 9)
+                        {
+                            return true;
+                        }
                     }
                 }
             }

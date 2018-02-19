@@ -1,16 +1,21 @@
 ﻿@using PropertyForSale.Models
 @model ListViewModel
 
-<div class="jumbotron">
+<div class="page-header">
     <h1>@ViewBag.Title</h1>
 </div>
 
-@foreach (var a in @Model.Adverts)
-{
-    @Html.Partial("_AdvertListPartial", a)
-}
-<div>
+<div class="panel-group">
+    @foreach (var a in @Model.Adverts)
+    {
+        @Html.Partial("_AdvertListPartial", a)
+    }
+</div>
+<div class="btn-group">
     @Html.PageLinks(Model.PagingInfo, x => Url.Action(ViewBag.CurrentAction, new { page = x }))
 </div>
+
+
+
 
 

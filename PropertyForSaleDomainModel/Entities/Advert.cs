@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using PropertyForSaleDomainModel.Enums;
+using PropertyForSale.Enums;
 
 namespace PropertyForSaleDomainModel.Entities
 {

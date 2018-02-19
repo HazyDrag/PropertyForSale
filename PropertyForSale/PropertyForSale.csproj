@@ -225,6 +225,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attributes\PhoneNumberAttribute.cs" />
+    <Compile Include="Attributes\PriceAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdvertController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -253,10 +254,12 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\advert.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\signin.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -346,13 +349,14 @@
     <Content Include="Views\Advert\Edit.cshtml" />
     <Content Include="Views\Shared\_ManageAdPartial.cshtml" />
     <Content Include="Views\Shared\_EditButtonPartial.cshtml" />
-    <Content Include="Views\Shared\_ImageAdPartial.cshtml" />
     <Content Include="Views\Shared\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Images\Ad\" />
+    <Folder Include="Images\Ad\Original\" />
+    <Folder Include="Images\Ad\Small\" />
+    <Folder Include="Images\Ad\Standart\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -105,11 +105,11 @@ namespace PropertyForSale.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            model.PhoneNumber = Regex.Replace(model.PhoneNumber, @"[^0-9]", "");
-
+        {            
             if (ModelState.IsValid)
             {
+                model.PhoneNumber = Regex.Replace(model.PhoneNumber, @"[^0-9]", "");
+
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber, Name = model.Name , RegistrationDate = DateTime.Now};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

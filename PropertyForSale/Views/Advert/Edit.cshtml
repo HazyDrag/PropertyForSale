@@ -1,4 +1,4 @@
-﻿@using PropertyForSaleDomainModel.Enums
+﻿@using PropertyForSale.Enums
 @using PropertyForSale.Models
 @model EditAdViewModel
 
@@ -6,24 +6,25 @@
     ViewBag.Title = "Edit advertisement";
 }
 
-<h2>@ViewBag.Title</h2>
-
-<div class="row">
-    <div class="col-md-8">
-        <section id="AddAdForm">
-            @using (Html.BeginForm("Edit", "Advert", new { id = Model.Id },FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.Partial("_ManageAdPartial", Model)
-                <div class="col-md-offset-2 col-md-10" style="padding-left: 0px;">
-                    <img src="@Model.OldPhoto.Path" width="280" alt="advert image" style="margin-bottom: 10px;">
-                </div>                
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Edit" class="btn btn-block btn-default" />
-                    </div>
-                </div>
-            }
-        </section>
-    </div>
+<div class="page-header">
+    <h1>@ViewBag.Title</h1>
 </div>
+
+<div class="panel-group">
+    @using (Html.BeginForm("Edit", "Advert", new { id = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Partial("_ManageAdPartial", Model)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <img src="@Model.OldPhoto.Path" alt="advert image">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <input type="submit" value="Save changes" class="btn btn-block btn-default" />
+            </div>
+        </div>
+    }
+</div>
+
