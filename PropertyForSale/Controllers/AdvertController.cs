@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -19,12 +20,12 @@ namespace PropertyForSale.Controllers
     public class AdvertController : Controller
     {
         private IRepository _repository;
-        private Int32 _pageSize = 2;
-        private String _defaultPhotoPath = "/Images/Ad/";
-        private String _originalPhotoPath = "Original/";
-        private String _standartPhotoPath = "Standart/";
-        private String _smallPhotoPath = "Small/";
-        private String _defaultPhotoName = "defaultAdImage.jpg";
+        private const Int32 _pageSize = 2;
+        private const String _defaultPhotoPath = "/Images/Ad/";
+        private const String _originalPhotoPath = "Original/";
+        private const String _standartPhotoPath = "Standart/";
+        private const String _smallPhotoPath = "Small/";
+        private const String _defaultPhotoName = "defaultAdImage.jpg";
         
         public AdvertController(IRepository repo)
         {
@@ -103,7 +104,8 @@ namespace PropertyForSale.Controllers
 
             foreach (PhotoModel p in photos)
             {
-                String fullPhotoSizePath = Server.MapPath(_defaultPhotoPath + photoSizePath + p.Path);
+                var fileStorageRoot = ConfigurationManager.AppSettings["FileStorageRoot"];
+                String fullPhotoSizePath = Server.MapPath(Path.Combine(fileStorageRoot, _defaultPhotoPath, photoSizePath,  p.Path));
                 String fullOriginalPhotoPath = Server.MapPath(_defaultPhotoPath + _originalPhotoPath + p.Path);
 
                 if (!System.IO.File.Exists(fullPhotoSizePath))
@@ -217,9 +219,9 @@ namespace PropertyForSale.Controllers
         //
         // GET: /Advert/Edit
         [Authorize]
-        public ViewResult Edit(Int32 AdId)
+        public ViewResult Edit(Int32 id)
         {
-            var data = _repository.GetById(AdId);
+            var data = _repository.GetById(id);
 
             if (data == null)
             {
@@ -233,7 +235,7 @@ namespace PropertyForSale.Controllers
 
             EditAdViewModel model = new EditAdViewModel
             {
-                Id = AdId,
+                Id = id,
                 Name = data.Name,
                 Description = data.Description,
                 Price = data.Price,
@@ -404,21 +406,48 @@ namespace PropertyForSale.Controllers
         }
 
         //
-        //GET: /
-        public ViewResult List(Int32 page = 1)
+        //GET
+        public ActionResult GetAdList(Int32 page = 1, Boolean isUserList = false)
         {
             if (page < 1)
             {
-                return View("Error404");
+                return null;
             }
-            ListViewModel model = GetFilteredListViewModel(page, null, null, null, null, AdStatus.Stop, null);
+            ListViewModel model;
+            String userId = User.Identity.GetUserId();
+            if (isUserList && userId != null)
+            {
+                model = GetFilteredListViewModel(page, null, null, null, null, null, userId);
+            }
+            else
+            {
+                model = GetFilteredListViewModel(page, null, null, null, null, AdStatus.Stop, null);
+            }
+             
+            model.MyId = userId;
 
-            ViewBag.Title = "List of advertisements";
-            ViewBag.CurrentAction = "List";
+            //Only one photo from all
+            foreach (AdvertModel a in model.Adverts)
+            {
+                PhotoModel p = a.Photos.FirstOrDefault();
+                a.Photos.Clear();
+                a.Photos.Add(p);
+            }
 
-            return View(model);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        //
+        //GET: /
+        public ViewResult List()
+        {
+            ViewBag.Title = "List of advertisements";
+
+            return View();
+        }
+
+        //
+        //GET: /
         [Authorize]
         public ViewResult MyList(Int32 page = 1)
         {
@@ -432,6 +461,7 @@ namespace PropertyForSale.Controllers
 
             ViewBag.Title = "My advertisements";
             ViewBag.CurrentAction = "MyList";
+            ViewBag.Type = "mylist";
 
             return View("List", model);
         }

@@ -1,21 +1,51 @@
-﻿@using PropertyForSale.Models
-@model ListViewModel
-
-<div class="page-header">
-    <h1>@ViewBag.Title</h1>
+﻿<div class="page-header">
+    <h1 id="dataswitcher" data-type="@ViewBag.Type">@ViewBag.Title</h1>
 </div>
 
-<div class="panel-group">
-    @foreach (var a in @Model.Adverts)
-    {
-        @Html.Partial("_AdvertListPartial", a)
-    }
+<div class="panel-group" id="advertContainer">
 </div>
-<div class="btn-group">
-    @Html.PageLinks(Model.PagingInfo, x => Url.Action(ViewBag.CurrentAction, new { page = x }))
+<div class="btn-group" id="paginatorContainer">
 </div>
 
+<script id="advertTemplate" type="text/html">
+    {{#RootTag}}
+    <div class="panel panel-default">
+        <div class="ad-price-container panel-body row ">
+            <div class="col-md-6">
+                {{#Photos}}
+                <img class="ad-photo" src="{{Path}}" alt="advert image">
+                {{/Photos}}
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h2 class="adname">
+                            <a href="/Advert/Id/{{ID}}">{{Name}}</a>
+                        </h2>
+                    </div>
+                    {{#User.ID}}
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary btn-edit" onclick="location.href = '/Advert/Edit/{{ID}}';">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            Edit
+                        </button>
+                    </div>
+                    {{/User.ID}}
+                </div>
+                <div class="col-md-12">
+                    <h4>Type: {{AdType.Name}}</h4>
+                </div>
 
+            </div>
+            <div class="ad-price">
+                <h1>
+                    <span class="label label-success">{{Price}} $</span>
+                </h1>
+            </div>
+        </div>
+    </div>
+    {{/RootTag}}
+</script>
 
-
-
+<script src="~/Scripts/ad-list.js"></script>
+<script src="~/Scripts/mustache.js"></script>

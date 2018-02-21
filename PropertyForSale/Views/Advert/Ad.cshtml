@@ -5,51 +5,63 @@
 @{
     ViewBag.Title = "Ad";
 }
-<div class="well" >
-    <table>
-        <tr>
-            <td>
-                <h1>@Model.Name</h1>
-                @Html.Partial("_EditButtonPartial")
-                <h4>Status: 
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-9">
+            <h1>@Model.Name</h1>
+        </div>
+        <div class="col-md-3" style="padding-top: 2%;">
+            @Html.Partial("_EditButtonPartial")
+        </div>
+
+        <div class="col-md-12">
+            <h4>
+                Status:
                 @switch (Model.Status)
                 {
                     case AdStatus.Active:
-                        <span class="label label-success">@Model.Status.ToString()</span>
+                    <span class="label label-success">@Model.Status.ToString()</span>
                         break;
                     case AdStatus.Pause:
-                        <span class="label label-warning">@Model.Status.ToString()</span>
+                <span class="label label-warning">@Model.Status.ToString()</span>
                         break;
                     case AdStatus.Stop:
-                        <span class="label label-danger">@Model.Status.ToString()</span>
+            <span class="label label-danger">@Model.Status.ToString()</span>
                         break;
                 }
-                </h4>
-                <p>Type: @Model.AdType.Name</p>
-                @foreach (PhotoModel p in Model.Photos)
-                    {
-                        <img src="@p.Path" alt="advert image" style="margin-right: 20px;">
-                    }                    
-                <p>@Model.Description</p>
-                <h1>
-                    <span class="label label-primary">@Model.Price.ToString("# $")</span>
-                </h1>
-            </td>            
-            <td>
-                <blockquote>
-                    <h3>Contacts:</h3>
-                    @if (Model.Status == AdStatus.Active)
-                    {
-                    <p>Name: @Model.User.Name</p>
-                    <p>Phone number: @Model.User.PhoneNumber</p>
-                    }
-                    else
-                    {
-                        <p>Advertisement is paused</p>
-                    }
-                </blockquote>
-            </td>            
-        </tr>
-    </table>
+            </h4>
+        </div>
+        <div class="col-md-12">
+            <p>Type: @Model.AdType.Name</p>
+        </div>
+        <div class=" col-md-12">
+            @foreach (PhotoModel p in Model.Photos)
+            {
+            <img src="@p.Path" class="ad-photo" alt="advert image">
+            }
+        </div>
+        <div class=" col-md-12">
+            <blockquote class="blockquote blockquote-reverse">
+                <h3>Contacts:</h3>
+                @if (Model.Status == AdStatus.Active)
+                {
+                <p>Name: @Model.User.Name</p>
+                <p>Phone number: @Model.User.PhoneNumber</p>
+                }
+                else
+                {
+            <p>Advertisement is paused</p>
+                }
+            </blockquote>
+        </div>
+        <div class=" col-md-8">
+            <p>@Model.Description</p>
+        </div>
+        <div class=" col-md-12">
+            <h1>
+                <span class="label label-primary">@Model.Price.ToString("# $")</span>
+            </h1>
+        </div>
+    </div>        
 </div>
 

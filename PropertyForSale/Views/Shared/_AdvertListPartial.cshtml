@@ -1,9 +1,9 @@
 ﻿@model PropertyForSale.Models.AdvertModel
 
 <div class="panel panel-default">
-    <div class="panel-body" style="position:relative;">
+    <div class="ad-price-container panel-body row">
         <div class="col-md-6">
-            <img src="@Model.Photos.FirstOrDefault().Path" alt="advert image" style="margin-right: 20px;">
+            <img class="ad-photo" src="@Model.Photos.FirstOrDefault().Path" alt="advert image" style="margin-right: 20px;">
         </div>
         <div class="col-md-6">
             <div class="row">
@@ -19,7 +19,6 @@
             <div class="col-md-12">
                 <h4>Type: @Model.AdType.Name</h4>
             </div>
-
         </div>
         <div class="ad-price">
             <h1>
@@ -28,3 +27,4 @@
         </div>
     </div>
 </div>
+

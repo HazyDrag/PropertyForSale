@@ -2,10 +2,8 @@
 
 @if (Request.IsAuthenticated && User.Identity.GetUserId() == Model.User.ID)
 {
-    <h3>
-        <button type="button" class="btn btn-primary" style="float: right;">
-            <span class="glyphicon glyphicon-pencil"></span>
-            @Html.ActionLink("Edit", "Edit", new { AdId = Model.ID }, new { @style = "color: #ffffff;" })
-        </button>
-    </h3>
+    <button type="button" class="btn btn-primary btn-edit" data-id="@Model.ID">
+        <span class="glyphicon glyphicon-pencil"></span>
+        Edit
+    </button>
 }

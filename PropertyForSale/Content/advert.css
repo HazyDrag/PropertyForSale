@@ -1,5 +1,24 @@
-﻿div.ad-price {
+﻿.ad-price {
     position: absolute;
     bottom: 15px;
-    right: 30px;
+    right: 15px;
+    padding-right: 15px;
+}
+
+.ad-price-container {
+    position: relative;
+}
+
+button.btn-edit {
+    float: right;
+}
+
+img.ad-photo {
+    width: 100%;
+    max-width: 500px;
+    margin-right: 20px;
+}
+
+.btn-manage {
+    border-radius: 3px !important;
 }

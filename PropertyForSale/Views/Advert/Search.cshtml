@@ -3,57 +3,59 @@
 @{
     ViewBag.Title = "Search";
 }
+<div ng-app="store">
+    @using (Html.BeginForm("Search", "Advert", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="page-header row">
+            <div class="col-md-2">
+                <h1>@ViewBag.Title</h1>
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.MinPrice, new { })
+                @Html.TextBoxFor(m => m.MinPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
+                @Html.ValidationMessageFor(m => m.MinPrice, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.MaxPrice, new { })
+                @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
+                @Html.ValidationMessageFor(m => m.MaxPrice, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.AdTypeID, new { })
+                @Html.DropDownListFor(m => m.AdTypeID, new SelectList(Model.Types, "ID", "Name"), "All types", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.AdTypeID, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Town, new { })
+                @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Town, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Search" class="btn btn-block btn-default btn-lg" style="margin-top: 20px;" />
+            </div>
+        </div>
 
-@using (Html.BeginForm("Search", "Advert", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
-{
-    <div class="page-header row">
-        <div class="col-md-2">
-            <h1>@ViewBag.Title</h1>
+        <div class="panel-group">
+            @foreach (var a in @Model.Adverts)
+            {
+                @Html.Partial("_AdvertListPartial", a)
+            }
         </div>
-        <div class="col-md-2">
-            @Html.LabelFor(m => m.MinPrice, new { })
-            @Html.TextBoxFor(m => m.MinPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
-            @Html.ValidationMessageFor(m => m.MinPrice, "", new { @class = "text-danger" })
+        <div class="btn-group">
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("Search",
+                            new
+                            {
+                                controller = "Advert",
+                                action = "Search",
+                                MinPrice = Model.MinPrice,
+                                MaxPrice = Model.MaxPrice,
+                                AdTypeID = Model.AdTypeID,
+                                Town = Model.Town,
+                                page = x
+                            }))
         </div>
-        <div class="col-md-2">
-            @Html.LabelFor(m => m.MaxPrice, new { })
-            @Html.TextBoxFor(m => m.MaxPrice, new { @class = "form-control", type = "number", min = "0", step = "1" })
-            @Html.ValidationMessageFor(m => m.MaxPrice, "", new { @class = "text-danger" })
-        </div>
-        <div class="col-md-2">
-            @Html.LabelFor(m => m.AdTypeID, new { })
-            @Html.DropDownListFor(m => m.AdTypeID, new SelectList(Model.Types, "ID", "Name"), "All types", new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.AdTypeID, "", new { @class = "text-danger" })
-        </div>
-        <div class="col-md-2">
-            @Html.LabelFor(m => m.Town, new { })
-            @Html.TextBoxFor(m => m.Town, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Town, "", new { @class = "text-danger" })
-        </div>
-        <div class="col-md-2">
-            <input type="submit" value="Search" class="btn btn-block btn-default btn-lg" style="margin-top: 20px;" />
-        </div>
-    </div>
+    }
+</div>
 
-    <div class="panel-group">
-        @foreach (var a in @Model.Adverts)
-        {
-            @Html.Partial("_AdvertListPartial", a)
-        }
-    </div>
-    <div class="btn-group">
-        @Html.PageLinks(Model.PagingInfo, x => Url.Action("Search",
-                   new
-                   {
-                       controller = "Advert",
-                       action = "Search",
-                       MinPrice = Model.MinPrice,
-                       MaxPrice = Model.MaxPrice,
-                       AdTypeID = Model.AdTypeID,
-                       Town = Model.Town,
-                       page = x
-                   }))
-    </div>
-}
-
-
+<script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+<script type="text/javascript" src="~/Scripts/angularjstestapp.js"></script>
